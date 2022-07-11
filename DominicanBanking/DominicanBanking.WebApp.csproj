@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <CopyRefAssembliesToPublishDirectory>false</CopyRefAssembliesToPublishDirectory>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.16" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DominicanBanking.Core.Application\DominicanBanking.Core.Application.csproj" />
+    <ProjectReference Include="..\DominicanBanking.Core.Domain\DominicanBanking.Core.Domain.csproj" />
+    <ProjectReference Include="..\DominicanBanking.Infrastructure.Identity\DominicanBanking.Infrastructure.Identity.csproj" />
+    <ProjectReference Include="..\DominicanBanking.Infrastructure.Persistence\DominicanBanking.Infrastructure.Persistence.csproj" />
+    <ProjectReference Include="..\DominicanBanking.Infrastructure.Shared\DominicanBanking.Infrastructure.Shared.csproj" />
+  </ItemGroup>
+
+</Project>
