@@ -7,7 +7,6 @@
   <ItemGroup>
     <Folder Include="Helpers\" />
     <Folder Include="Interfaces\Repository\" />
-    <Folder Include="Interfaces\Services\" />
     <Folder Include="Mappings\" />
     <Folder Include="ViewModel\" />
     <Folder Include="Services\" />
