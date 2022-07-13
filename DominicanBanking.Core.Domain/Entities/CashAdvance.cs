@@ -7,14 +7,11 @@ using System.Threading.Tasks;
 
 namespace DominicanBanking.Core.Domain.Entities
 {
-    public class Payment : AuditableBaseEntity
+    public class CashAdvance :AuditableBaseEntity
     {
-        public string IdentifyNumberFrom { get; set; }
+        public string CreditCardNumberFrom { get; set; }
         public double Amount { get; set; }
         public string IdentifyNumberTo { get; set; }
         public string UserId { get; set; }
-        public int TypeId { get; set; }
-
-        public TypePayment TypePayment { get; set; }
     }
 }
