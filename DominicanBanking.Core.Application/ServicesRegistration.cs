@@ -1,8 +1,13 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace DominicanBanking.Core.Application
 {
-    public class ServicesRegistration
+    public static class ServicesRegistration
     {
+        public static void AddApplicationLayer(this IServiceCollection service) { 
+        
+        
+        } 
     }
 }
