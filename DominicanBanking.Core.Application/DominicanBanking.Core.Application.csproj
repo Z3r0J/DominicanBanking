@@ -8,6 +8,10 @@
     <Folder Include="Helpers\" />
     <Folder Include="Interfaces\Repository\" />
     <Folder Include="Mappings\" />
+    <Folder Include="Helpers\" />
+    <Folder Include="Mappings\" />
+    <Folder Include="ViewModel\" />
+    <Folder Include="Services\" />
     <Folder Include="ViewModel\" />
     <Folder Include="Services\" />
   </ItemGroup>
