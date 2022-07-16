@@ -24,6 +24,9 @@ namespace DominicanBanking.Core.Application.Mapping
                 .ForMember(x => x.Error, opt => opt.Ignore())
                 .ReverseMap();
 
+            CreateMap<AccountResponse, UserViewModel>()
+                .ReverseMap();
+
         }
        
     }

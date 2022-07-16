@@ -1,4 +1,5 @@
 ﻿using DominicanBanking.Core.Application.DTOS.Account;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace DominicanBanking.Core.Application.Interfaces.Services
@@ -11,5 +12,6 @@ namespace DominicanBanking.Core.Application.Interfaces.Services
         Task LogOutAsync();
         Task<RegisterResponse> RegisterAdministratorAsync(RegisterRequest request);
         Task<RegisterResponse> RegisterClientUserAsync(RegisterRequest request);
+        Task<List<AccountResponse>> GetUsersAsync();
     }
 }

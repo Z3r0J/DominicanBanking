@@ -1,4 +1,5 @@
 ﻿using DominicanBanking.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -9,28 +10,24 @@ using System.Threading.Tasks;
 
 namespace DominicanBanking.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
-
         public HomeController()
         {
 
         }
 
-        public IActionResult Index()
+        [Authorize(Roles = "ADMINISTRATOR")]
+        public IActionResult Dashboard()
         {
             return View();
         }
 
-        public IActionResult Privacy()
+        [Authorize(Roles = "CLIENT")]
+        public IActionResult Client()
         {
             return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }

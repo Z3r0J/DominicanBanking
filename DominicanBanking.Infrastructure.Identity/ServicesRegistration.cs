@@ -34,7 +34,15 @@ namespace DominicanBanking.Infrastructure.Identity
             service.AddIdentity<BankUsers, IdentityRole>()
                 .AddEntityFrameworkStores<IdentityContext>().AddDefaultTokenProviders();
 
+            service.ConfigureApplicationCookie(options =>
+                {
+                    options.LoginPath = "/User/Login";
+                    options.AccessDeniedPath = "/User/AccessDenied";
+                });
+
             service.AddAuthentication();
+
+
             #endregion
 
             #region Services

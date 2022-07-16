@@ -3,6 +3,7 @@ using DominicanBanking.Core.Application.Enums;
 using DominicanBanking.Core.Application.Interfaces.Services;
 using DominicanBanking.Infrastructure.Identity.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -67,6 +68,32 @@ namespace DominicanBanking.Infrastructure.Identity.Services
             response.IsVerified = user.EmailConfirmed;
 
             return response;
+        }
+
+        public async Task<List<AccountResponse>> GetUsersAsync() {
+
+            List<AccountResponse> accounts = new();
+
+            var response = await _userManager.Users.ToListAsync();
+
+            foreach (BankUsers user in response)
+            {
+               var roles = await _userManager.GetRolesAsync(user);
+
+                AccountResponse account = new() { 
+                Id = user.Id,
+                FirstName=user.Name,
+                LastName=user.LastName,
+                Documents = user.Documents,
+                Email = user.Email,
+                Roles = roles.ToList(),
+                IsVerified = user.EmailConfirmed
+                };
+
+                accounts.Add(account);
+            }
+
+            return accounts;
         }
 
         public async Task LogOutAsync()

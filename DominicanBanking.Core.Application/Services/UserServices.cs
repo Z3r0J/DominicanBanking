@@ -38,6 +38,14 @@ namespace DominicanBanking.Core.Application.Services
 
         }
 
+        public async Task<List<UserViewModel>> GetAllUserAsync() {
+
+            var response = await _accountServices.GetUsersAsync();
+
+            return _mapper.Map<List<UserViewModel>>(response);
+        
+        } 
+
         public async Task LogOutAsync() {
             await _accountServices.LogOutAsync();    
 
