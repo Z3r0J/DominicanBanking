@@ -5,12 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Mappings\" />
-    <Folder Include="Mappings\" />
-    <Folder Include="ViewModel\" />
-    <Folder Include="Services\" />
-    <Folder Include="ViewModel\" />
-    <Folder Include="Services\" />
+    <Compile Remove="Mappings\**" />
+    <Compile Remove="ViewModel\**" />
+    <EmbeddedResource Remove="Mappings\**" />
+    <EmbeddedResource Remove="ViewModel\**" />
+    <None Remove="Mappings\**" />
+    <None Remove="ViewModel\**" />
   </ItemGroup>
 
   <ItemGroup>
