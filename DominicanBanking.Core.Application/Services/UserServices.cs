@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DominicanBanking.Core.Application.Services
 {
-    public class UserServices
+    public class UserServices : IUserServices
     {
         private readonly IAccountServices _accountServices;
         private readonly IMapper _mapper;

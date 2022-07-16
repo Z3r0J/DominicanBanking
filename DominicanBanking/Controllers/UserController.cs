@@ -1,4 +1,8 @@
-﻿using DominicanBanking.Models;
+﻿using DominicanBanking.Core.Application.DTOS.Account;
+using DominicanBanking.Core.Application.Helpers;
+using DominicanBanking.Core.Application.Interfaces.Services;
+using DominicanBanking.Core.Application.ViewModel.User;
+using DominicanBanking.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -11,27 +15,38 @@ namespace DominicanBanking.Controllers
 {
     public class UserController : Controller
     {
-        private readonly ILogger<UserController> _logger;
-
-        public UserController(ILogger<UserController> logger)
+        private readonly IUserServices _userServices;
+        public UserController(IUserServices services)
         {
-            _logger = logger;
+            _userServices = services;
         }
 
         public IActionResult Login()
         {
-            return View();
+            return View(new LoginViewModel());
         }
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginViewModel vm) {
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
+            if (!ModelState.IsValid)
+            {
+                return View(vm);
+            }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            var response = await _userServices.LoginAsync(vm);
+
+            if (response != null && response.HasError!= true) {
+
+                HttpContext.Session.Set<AuthenticationResponse>("user", response);
+                return RedirectToRoute(new { action="Index",Controller="Home"});
+            }
+            else
+            {
+                vm.HasError = response.HasError;
+                vm.Error = response.Error;
+                return View(vm);
+            }
+
         }
     }
 }

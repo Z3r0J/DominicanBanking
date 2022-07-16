@@ -14,6 +14,7 @@ namespace DominicanBanking.Core.Application
 
             #region Services
             service.AddTransient(typeof(IGenericServices<,,>), typeof(GenericServices<,,>));
+            service.AddTransient<IUserServices, UserServices>();
             #endregion
 
         }
