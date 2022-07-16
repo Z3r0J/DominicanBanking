@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using DominicanBanking.Core.Application.DTOS.Account;
+using DominicanBanking.Core.Application.ViewModel.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +13,16 @@ namespace DominicanBanking.Core.Application.Mapping
     {
         public GeneralProfile()
         {
+            CreateMap<AuthenticationRequest, LoginViewModel>()
+                .ForMember(x => x.HasError, opt => opt.Ignore())
+                .ForMember(x => x.Error, opt => opt.Ignore())
+                .ReverseMap();
+
+            CreateMap<RegisterRequest, SaveUserViewModel>()
+                .ForMember(x => x.UserType, opt => opt.Ignore())
+                .ForMember(x => x.HasError, opt => opt.Ignore())
+                .ForMember(x => x.Error, opt => opt.Ignore())
+                .ReverseMap();
 
         }
        

@@ -11,7 +11,9 @@ namespace DominicanBanking.Core.Application
         public static void AddApplicationLayer(this IServiceCollection service) 
         {
             service.AddAutoMapper(Assembly.GetExecutingAssembly());
-            #region Services            
+
+            #region Services
+            service.AddTransient(typeof(IGenericServices<,,>), typeof(GenericServices<,,>));
             #endregion
 
         }

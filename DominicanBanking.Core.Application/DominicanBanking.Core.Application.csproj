@@ -6,11 +6,8 @@
 
   <ItemGroup>
     <Compile Remove="Mappings\**" />
-    <Compile Remove="ViewModel\**" />
     <EmbeddedResource Remove="Mappings\**" />
-    <EmbeddedResource Remove="ViewModel\**" />
     <None Remove="Mappings\**" />
-    <None Remove="ViewModel\**" />
   </ItemGroup>
 
   <ItemGroup>

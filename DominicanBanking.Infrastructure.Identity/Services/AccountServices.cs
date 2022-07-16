@@ -16,14 +16,12 @@ namespace DominicanBanking.Infrastructure.Identity.Services
 
         private readonly UserManager<BankUsers> _userManager;
         private readonly SignInManager<BankUsers> _signInManager;
-        private readonly IEmailServices _emailServices;
 
 
-        public AccountServices(UserManager<BankUsers> userManager, SignInManager<BankUsers> signInManager, IEmailServices emailServices)
+        public AccountServices(UserManager<BankUsers> userManager, SignInManager<BankUsers> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _emailServices = emailServices;
         }
 
         public async Task<AuthenticationResponse> AuthenticateAsync(AuthenticationRequest request)
