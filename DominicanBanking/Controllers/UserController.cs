@@ -3,6 +3,7 @@ using DominicanBanking.Core.Application.Helpers;
 using DominicanBanking.Core.Application.Interfaces.Services;
 using DominicanBanking.Core.Application.ViewModel.User;
 using DominicanBanking.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -57,6 +58,13 @@ namespace DominicanBanking.Controllers
             await _userServices.LogOutAsync();
 
             return RedirectToRoute(new { action = "Login", controller = "User" });
+
+        }
+        [Authorize(Roles="ADMINISTRATOR")]
+        public async Task<IActionResult> UserList() {
+
+
+            return View(await _userServices.GetAllUserAsync());
 
         }
     }

@@ -13,6 +13,7 @@ namespace DominicanBanking.Core.Application.Interfaces.Services
         Task<AuthenticationResponse> LoginAsync(LoginViewModel model);
         Task<RegisterResponse> RegisterClientAsync(SaveUserViewModel model);
         Task LogOutAsync();
+        Task<List<UserViewModel>> GetAllUserAsync();
 
     }
 }
