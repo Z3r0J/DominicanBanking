@@ -17,12 +17,14 @@ namespace DominicanBanking.Infrastructure.Identity.Services
 
         private readonly UserManager<BankUsers> _userManager;
         private readonly SignInManager<BankUsers> _signInManager;
+        private readonly IUserProductServices _userProductServices;
 
 
-        public AccountServices(UserManager<BankUsers> userManager, SignInManager<BankUsers> signInManager)
+        public AccountServices(UserManager<BankUsers> userManager, SignInManager<BankUsers> signInManager,IUserProductServices userProductServices)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _userProductServices = userProductServices;
         }
 
         public async Task<AuthenticationResponse> AuthenticateAsync(AuthenticationRequest request)
@@ -139,6 +141,18 @@ namespace DominicanBanking.Infrastructure.Identity.Services
             if (result.Succeeded)
             {
                 await _userManager.AddToRoleAsync(user, Roles.CLIENT.ToString());
+                var userWasRegister = await _userManager.FindByEmailAsync(request.Email);
+
+                await _userProductServices.Add(new()
+                {
+                    IdentifyNumber = Guid.NewGuid().ToString().Substring(0,9),
+                    IsPrincipal = true,
+                    Amount = request.Amount.Value,
+                    Limit = null,
+                    ProductId = 1,
+                    UserId = userWasRegister.Id
+                });
+
             }
             else
             {

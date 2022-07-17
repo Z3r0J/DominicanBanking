@@ -25,6 +25,7 @@ namespace DominicanBanking.Controllers
         {
             return View(new LoginViewModel());
         }
+
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel vm) {
 
@@ -38,7 +39,8 @@ namespace DominicanBanking.Controllers
             if (response != null && response.HasError!= true) {
 
                 HttpContext.Session.Set<AuthenticationResponse>("user", response);
-                return RedirectToRoute(new { action="Index",Controller="Home"});
+
+                return response.Roles.Any(x=>x=="ADMINISTRATOR") ? RedirectToRoute(new { action="Dashboard",Controller="Home"}) : RedirectToRoute(new { action = "Client", Controller = "Home" });
             }
             else
             {
@@ -46,6 +48,15 @@ namespace DominicanBanking.Controllers
                 vm.Error = response.Error;
                 return View(vm);
             }
+
+        }
+
+        public async Task<IActionResult> LogOut() {
+
+            HttpContext.Session.Remove("user");
+            await _userServices.LogOutAsync();
+
+            return RedirectToRoute(new { action = "Login", controller = "User" });
 
         }
     }
