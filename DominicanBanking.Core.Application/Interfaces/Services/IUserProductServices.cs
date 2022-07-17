@@ -1,4 +1,4 @@
-﻿using DominicanBanking.Core.Application.ViewModel.Product;
+﻿using DominicanBanking.Core.Application.ViewModel.UserProduct;
 using DominicanBanking.Core.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DominicanBanking.Core.Application.Interfaces.Services
 {
-    public interface IProductServices : IGenericServices<SaveProductViewModel,ProductViewModel,Product>
+    public interface IUserProductServices : IGenericServices<SaveUserProductViewModel,UserProductViewModel,UserProduct>
     {
     }
 }

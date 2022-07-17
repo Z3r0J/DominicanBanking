@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace DominicanBanking.Infrastructure.Persistence.Repositories
 {
-    public class ProductRepository : GenericRepository<Product>,IProductRepository
+    public class UserProductRepository:GenericRepository<UserProduct>, IUserProductRepository
     {
         private readonly ApplicationContext _applicationContext;
-        public ProductRepository(ApplicationContext applicationContext):base(applicationContext)
+        public UserProductRepository(ApplicationContext applicationContext) : base(applicationContext)
         {
             _applicationContext = applicationContext;
         }

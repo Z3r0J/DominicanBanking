@@ -31,6 +31,7 @@ namespace DominicanBanking.Infrastructure.Persistence
             #region Repository
 
             service.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            service.AddTransient<IUserProductRepository, UserProductRepository>();
             service.AddTransient<IProductRepository, ProductRepository>();
 
             #endregion

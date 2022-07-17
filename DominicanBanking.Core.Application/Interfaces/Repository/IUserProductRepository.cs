@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DominicanBanking.Core.Application.Interfaces.Repository
 {
-    public interface IProductRepository : IGenericRepository<Product>
+    public interface IUserProductRepository : IGenericRepository<UserProduct>
     {
     }
 }
