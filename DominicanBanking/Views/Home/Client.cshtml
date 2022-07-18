@@ -1,8 +1,17 @@
-﻿@{
+﻿@using DominicanBanking.Core.Application.ViewModel.UserProduct
+@model List<UserProductViewModel>
+@{
     ViewData["Title"] = "Home Page";
 }
-
-<div class="text-center">
-    <h1 class="display-4">Welcome Client</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container-fluid">
+    <div class="card"></div>
+@foreach(var item in Model){
+    <div class="text-center">
+    @{if(item.IsPrincipal){<span>Is Principal</span>}else{<span>Is not Principal</span>}}
+    <h1 class="display-4">@item.IdentifyNumber</h1>
+    <p>@item.ProductName</p>
 </div>
+
+}
+</div>
+

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DominicanBanking.Core.Application.DTOS.Account;
+using DominicanBanking.Core.Application.ViewModel.Product;
 using DominicanBanking.Core.Application.ViewModel.User;
 using DominicanBanking.Core.Application.ViewModel.UserProduct;
 using DominicanBanking.Core.Domain.Entities;
@@ -38,8 +39,25 @@ namespace DominicanBanking.Core.Application.Mapping
                .ForMember(x => x.Modified, opt => opt.Ignore())
                .ForMember(x => x.ModifiedBy, opt => opt.Ignore());
 
+            CreateMap<UserProduct, UserProductViewModel>()
+               .ForMember(x => x.ProductName, opt => opt.MapFrom(ac => ac.Product.Name))
+               .ReverseMap()
+               .ForMember(x => x.Created, opt => opt.Ignore())
+               .ForMember(x => x.CreatedBy, opt => opt.Ignore())
+               .ForMember(x => x.Modified, opt => opt.Ignore())
+               .ForMember(x => x.ModifiedBy, opt => opt.Ignore());
+            
+            CreateMap<Product, ProductViewModel>()
+               .ReverseMap()
+               .ForMember(x => x.Created, opt => opt.Ignore())
+               .ForMember(x => x.CreatedBy, opt => opt.Ignore())
+               .ForMember(x => x.Modified, opt => opt.Ignore())
+               .ForMember(x => x.ModifiedBy, opt => opt.Ignore());
+
             CreateMap<ActivateRequest, ActivateViewModel>()
                 .ReverseMap();
+
+
 
         }
        

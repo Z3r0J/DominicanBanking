@@ -9,5 +9,6 @@ namespace DominicanBanking.Core.Application.Interfaces.Repository
 {
     public interface IUserProductRepository : IGenericRepository<UserProduct>
     {
+        Task<List<UserProduct>> GetIncludeAsync();
     }
 }

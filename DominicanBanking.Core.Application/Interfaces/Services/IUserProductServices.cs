@@ -10,5 +10,6 @@ namespace DominicanBanking.Core.Application.Interfaces.Services
 {
     public interface IUserProductServices : IGenericServices<SaveUserProductViewModel,UserProductViewModel,UserProduct>
     {
+        Task<List<UserProductViewModel>> GetAllViewModelWithIncludes();
     }
 }
