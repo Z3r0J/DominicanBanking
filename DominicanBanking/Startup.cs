@@ -1,7 +1,9 @@
+using DominicanBanking.Core.Application;
 using DominicanBanking.Infrastructure.Identity;
 using DominicanBanking.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,6 +30,8 @@ namespace DominicanBanking
             services.AddSession();
             services.AddPersistenceInfrastructure(Configuration);
             services.AddIdentityInfrastructure(Configuration);
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddApplicationLayer();
             services.AddControllersWithViews();
         }
 
@@ -48,6 +52,7 @@ namespace DominicanBanking
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseSession();
 
             app.UseAuthentication();
             app.UseAuthorization();
@@ -56,7 +61,7 @@ namespace DominicanBanking
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=User}/{action=Login}/{id?}");
             });
         }
     }

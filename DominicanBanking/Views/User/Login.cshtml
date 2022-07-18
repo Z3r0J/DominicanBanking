@@ -1,0 +1,40 @@
+﻿@using DominicanBanking.Core.Application.ViewModel.User
+@model LoginViewModel
+
+@{
+}
+
+<div class="body">
+
+    <div class="login-container login-container-1">
+        <div class="form-container log-in-container">
+            <form class="form_Login" asp-action="Login" asp-controller="User">
+                    <h1>Login</h1>
+                                    @if(Model.HasError){<div class="alert alert-danger">@Model.Error</div>}
+                    <div class="social-container">
+                        <a href="#" class="social"><i class="fa fa-facebook fa-2x"></i></a>
+                        <a href="#" class="social"><i class="fab fa fa-twitter fa-2x"></i></a>
+                    </div>
+                    <span class="span_Login">or use your account</span>
+                    <input class="input" asp-for="Email" placeholder="Email" />
+                    <span class="text-danger mt-1 mb-1" asp-validation-for="Email"></span>
+                    <input class="input" asp-for="Password" placeholder="Password" />
+                    <span class="text-danger mt-1 mb-1" asp-validation-for="Password"></span>
+                    <a href="#">Forgot your password?</a>
+                    <button class="button" type="submit">Log In</button>
+                </form>
+            </div>
+            <div class="overlay-container">
+                <div class="overlay">
+                    <div class="overlay-panel overlay-right">
+                        <span style="font-size: 100px;">🇩🇴</span>
+                        <h1>Dominican Banking</h1>
+                        <p>El banco preferido por todos los dominicanos</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+

@@ -1,5 +1,7 @@
-﻿using DominicanBanking.Infrastructure.Identity.Contexts;
+﻿using DominicanBanking.Core.Application.Interfaces.Services;
+using DominicanBanking.Infrastructure.Identity.Contexts;
 using DominicanBanking.Infrastructure.Identity.Entities;
+using DominicanBanking.Infrastructure.Identity.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -27,11 +29,26 @@ namespace DominicanBanking.Infrastructure.Identity
             }
 
             #endregion
+
             #region Identity
             service.AddIdentity<BankUsers, IdentityRole>()
                 .AddEntityFrameworkStores<IdentityContext>().AddDefaultTokenProviders();
 
+            service.ConfigureApplicationCookie(options =>
+                {
+                    options.LoginPath = "/User/Login";
+                    options.AccessDeniedPath = "/User/AccessDenied";
+                });
+
             service.AddAuthentication();
+
+
+            #endregion
+
+            #region Services
+
+            service.AddTransient<IAccountServices, AccountServices>();
+
             #endregion
 
         }

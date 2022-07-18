@@ -1,4 +1,9 @@
-﻿using DominicanBanking.Models;
+﻿using DominicanBanking.Core.Application.DTOS.Account;
+using DominicanBanking.Core.Application.Helpers;
+using DominicanBanking.Core.Application.Interfaces.Services;
+using DominicanBanking.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -9,29 +14,31 @@ using System.Threading.Tasks;
 
 namespace DominicanBanking.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly IUserProductServices _userProductServices;
+        public HomeController(IUserProductServices userProductServices)
         {
-            _logger = logger;
+            _userProductServices = userProductServices;
         }
 
-        public IActionResult Index()
+        [Authorize(Roles = "ADMINISTRATOR")]
+        public IActionResult Dashboard()
         {
             return View();
         }
 
-        public IActionResult Privacy()
+        [Authorize(Roles = "CLIENT")]
+        public async Task<IActionResult> Client()
         {
-            return View();
-        }
+            var info = HttpContext.Session.Get<AuthenticationResponse>("user");
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            var UserProduct = await _userProductServices.GetAllViewModelWithIncludes();
+
+
+
+            return View(UserProduct.Where(up=>up.UserId==info.Id).ToList());
         }
     }
 }

@@ -1,4 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+@using DominicanBanking.Core.Application.Helpers
+@using DominicanBanking.Core.Application.DTOS.Account
+@inject IHttpContextAccessor httpContextAccessor
+@{var User = httpContextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -6,43 +12,83 @@
     <title>@ViewData["Title"] - DominicanBanking</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/cdb.min.css"/>
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">DominicanBanking</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
+    @if (User != null)
+    {
+        <div class="container_Home">
+
+            <nav class="navbar navbar-expand-lg navbar-light bg-primary text-white">
+                <div class="container-fluid">
+                    <a class="nav_item1" href="#"><i class="fa fa-home" aria-hidden="true"></i> Banking </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between" id="navbarNavDropdown">
+                        <ul class="navbar-nav">
+                            @{var isAdmin = User.Roles.Any(r => r == "ADMINISTRATOR");}
+                            @if(isAdmin){
+                            <li class="nav-item dropdown">
+                                <a class="nav_item dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa fa-user me-2"></i>User Manager
+                                </a>
+
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <li><a class="dropdown-item" asp-action="UserList" asp-controller="User">User List</a></li>
+                                    <li><a class="dropdown-item" asp-action="Register" asp-controller="User">Create</a></li>
+                                    <li><a class="dropdown-item" asp-action="Create" asp-controller="UserProduct">Add Product</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav_item dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa fa-user me-2"></i>User Product
+                                </a>
+
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <li><a class="dropdown-item" href="#">Action</a></li>
+                                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                                </ul>
+                            </li>
+                            }
+
+                        </ul>
+                        <ul class="navbar-nav">
+
+                            <li class="nav-item dropdown">
+                                <a class="nav_item dropdown-toggle me-3" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa fa-power-off me-2" aria-hidden="true"></i>@User.FirstName @User.LastName
+                                </a>
+
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <li><a class="dropdown-item" asp-action="LogOut" asp-controller="User">Logout</a></li>
+
+                                </ul>
+                            </li>
+
+                        </ul>
+                    </div>
                 </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+            </nav>
+        </div>
+        }
+    <div class="containerr">
+        <main role="main">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2022 - DominicanBanking - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
+    @*<footer class="border-top footer text-muted">
+            <div class="container">
+                &copy; 2022 - DominicanBanking - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            </div>
+        </footer>*@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/lib/bootstrap/dist/js/cdb.min.js"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

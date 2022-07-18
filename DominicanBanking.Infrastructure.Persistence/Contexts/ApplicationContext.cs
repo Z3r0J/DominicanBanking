@@ -1,9 +1,11 @@
-﻿using DominicanBanking.Core.Domain.Entities;
+﻿using DominicanBanking.Core.Domain.Common;
+using DominicanBanking.Core.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace DominicanBanking.Infrastructure.Persistence.Contexts
@@ -22,6 +24,27 @@ namespace DominicanBanking.Infrastructure.Persistence.Contexts
         public DbSet<TypePayment> TypePayments { get; set; }
         public DbSet<CashAdvance> Advances { get; set; }
         public DbSet<Transfer> Transfers { get; set; }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+        {
+            foreach (var entry in ChangeTracker.Entries<AuditableBaseEntity>())
+            {
+                switch (entry.State)
+                {
+                    case EntityState.Added:
+                        entry.Entity.Created = DateTime.Now;
+                        entry.Entity.CreatedBy = "DefaultAppUser";
+                        break;
+                    case EntityState.Modified:
+                        entry.Entity.Modified = DateTime.Now;
+                        entry.Entity.ModifiedBy = "DefaultAppUser";
+                        break;
+                }
+            }
+
+            return base.SaveChangesAsync(cancellationToken);
+        }
+
 
 
         protected override void OnModelCreating(ModelBuilder builder) {

@@ -1,0 +1,56 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+@using DominicanBanking.Core.Application.ViewModel.UserProduct
+@model List<UserProductViewModel>
+@{
+}
+
+<div class="container-fluid mt-5">
+    <div class="row d-flex justify-content-center">
+        <div class="col-8">
+            <div class="d-flex justify-content-between ">
+                <h1 class="fw-bold text-start color">&nbsp;User Product</h1>
+                <a class="btn btn-primary btn-rounded"><i class="fa fa-plus"></i> </a>
+            </div>
+
+        </div>
+    </div>
+
+
+
+    <div class="row d-flex justify-content-center mt-5">
+
+        <div class="col-8">
+            <table class="table table-hover table-striped border border-light rounded shadow">
+                <thead class="border border-light rounded-1">
+                    <tr>
+                        <th scope="col">Identify Number</th>
+                        <th scope="col">Amount</th>
+                        <th scope="col">Limit</th>
+                        <th scope="col">Principal</th>
+                        <th scope="col">Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  
+                    @foreach (UserProductViewModel item in Model.OrderBy(user=>user.UserId))
+                   {
+                     <tr>
+                        <td>@item.IdentifyNumber</td>
+                        <td>@item.Amount</td>
+                        <td>@item.Limit</td>
+                        <td><span class="@(item.IsPrincipal?"badge bg-warning text-dark":"badge bg-danger")">@(item.IsPrincipal?"TRUE":"FALSE")</span></td>
+                        <td>@item.ProductName</td>
+                    </tr>   
+                   }
+                   
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+

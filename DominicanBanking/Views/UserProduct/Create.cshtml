@@ -1,0 +1,81 @@
+﻿@using DominicanBanking.Core.Application.ViewModel.UserProduct
+@model SaveUserProductViewModel
+@{
+}
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+$(document).ready(
+    () => {
+        Type();
+    }
+);
+
+    const Type = () =>{
+    
+        const type = $("#ProductId").val();
+        console.log(type);
+
+        if (type == "2") {
+            const div = document.getElementById("div-limit");
+            div.style.display = "flex";
+
+        }
+        else {
+            const div = document.getElementById("div-limit");
+            $("#Limit").val(0);
+            div.style.display = "none";
+        }
+    
+    }
+</script>
+
+<div class="container-fluid">
+
+    <div class="row d-flex justify-content-center mt-5">
+        <div class="col-5">
+            <div class="card">
+                <div class="card-header bg-primary text-white text-center">
+                    <h4 class="fs-3">Create New Product</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create" asp-controller="UserProduct">
+                        <div class="row mb-3">
+
+                            <div class="form-group col-md-6">
+                                <label class="form-label">User: </label>
+                                <select class="form-control" asp-for="UserId" asp-items="@ViewBag.Users">
+                                    <option value="">Select a User</option>
+                                </select>
+
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label class="form-label">Account Type: </label>
+                                <select class="form-control" asp-for="ProductId" asp-items="@(new SelectList(ViewBag.Types,"Id","Name"))" onchange="Type()" required>
+                                    <option value="">Select a Type</option>
+                                </select>
+
+                            </div>
+                            </div>
+                           <div class="row mb-3">
+                             <div class="form-group col-md-6">
+                                <label class="form-label">Amount: </label>
+                                <input type="number" step="any" value="0" class="form-control" asp-for="Amount" />
+                            </div>
+                                <div class="form-group col-md-6" id="div-limit">
+                                 <label class="form-label">Limit: </label>
+                                <input type="number" step="any" value="0" class="form-control" asp-for="Limit" />
+                                </div>
+                            </div>
+                        <div class="float-end btn-group-md">
+                            <button class="btn btn-primary w-100">Save</button>
+                            <a asp-action="UserProduct" asp-controller="Index" class="btn btn-warning w-100">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    </div>
