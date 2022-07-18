@@ -9,6 +9,7 @@ namespace DominicanBanking.Core.Application.ViewModel.UserProduct
 {
     public class UserProductViewModel
     {
+        public int Id { get; set; }   
         public string IdentifyNumber { get; set; }
         public double Amount { get; set; }
         public double? Limit { get; set; }

@@ -1,0 +1,15 @@
+﻿@using DominicanBanking.Core.Application.ViewModel.Question
+
+@model QuestionViewModel
+
+@{
+}
+
+<form asp-action="QuestionExpress" asp-controller="Payment">
+    <input asp-for="IdentifyNumberFrom" type="hidden" />
+    <input asp-for="IdentifyNumberTo" type="hidden" />
+    <input asp-for="Amount" type="hidden" />
+    <input asp-for="UserId" type="hidden" />
+    <input asp-for="TypePaymentId" type="hidden" />
+
+</form>
