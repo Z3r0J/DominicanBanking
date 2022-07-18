@@ -15,7 +15,6 @@ namespace DominicanBanking.Core.Application.ViewModel.UserProduct
 
         public string UserId { get; set; }
         public int ProductId { get; set; }
-        public List<ProductViewModel> Products { get; set; }
 
         public bool IsPrincipal { get; set; }
     }

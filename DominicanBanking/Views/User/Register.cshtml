@@ -1,90 +1,120 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using DominicanBanking.Core.Application.ViewModel.User
+@model SaveUserViewModel
 @{
 }
 
-<div class="form row">
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+$(document).ready(
+    () => {
+        Client();
+    }
+);
 
-    <div class="row mt-5">
-        <div class="col-6 offset-3">
+    const Client = () =>{
+    
+        const rol = $("#UserType").val();
+        console.log(rol);
+
+        if (rol == "CLIENT") {
+            const div = document.getElementById("div-amount");
+            div.style.display = "flex";
+
+        }
+        else {
+            const div = document.getElementById("div-amount");
+            div.style.display = "none";
+        }
+    
+    }
+</script>
+
+<div class="container-fluid">
+
+    <div class="row d-flex justify-content-center mt-5">
+        <div class="col-5">
             <div class="card">
-                <div class="card-header  bg-primary text-white">
-                    <h4>Registro de nuevo usuario</h4>
+                <div class="card-header bg-primary text-white text-center">
+                    <h4 class="fs-3">Registro de nuevo usuario</h4>
                 </div>
                 <div class="card-body">
-
-                    <form>
-                        <div class="row">
+                    @if(Model.HasError){<span class="alert alert-danger">@Model.Error</span>}
+                    <form asp-action="Register" asp-controller="User">
+                        <div class="row mb-3">
                             <div class="form-group col-md-6">
-                                <label class="form-label">Nombre: </label>
-                                <input class="form-control" />
+                                <label class="form-label">FirstName: </label>
+                                <input class="form-control" asp-for="Name" />
+                                <span asp-validation-for="Name"></span>
 
                             </div>
                             <div class="form-group col-md-6">
-                                <label class="form-label">Apellido: </label>
-                                <input class="form-control" />
-
+                                <label class="form-label">LastName: </label>
+                                <input class="form-control" asp-for="LastName" />
+                                <span asp-validation-for="LastName"></span>
                             </div>
                         </div>
 
-                        <div class="row">
+                        <div class="row mb-3">
 
                             <div class="form-group col-md-6">
-                                <label class="form-label">Documentos: </label>
-                                <input class="form-control" />
-
+                                <label class="form-label">Documents: </label>
+                                <input class="form-control" asp-for="Documents" />
+                                <span asp-validation-for="Documents"></span>
                             </div>
                             <div class="form-group col-md-6">
-                                <label class="form-label">Telefono: </label>
-                                <input class="form-control" />
+                                <label class="form-label">Phone Number: </label>
+                                <input class="form-control" asp-for="Phone" />
+                                <span asp-validation-for="Phone"></span>
 
                             </div>
+                        </div>
+                        <div class="row mb-3">
                             <div class="form-group col-md-6">
-                                <label class="form-label">Correo: </label>
-                                <input class="form-control" />
-
+                                <label class="form-label">Email: </label>
+                                <input class="form-control" asp-for="Email" />
+                                <span asp-validation-for="Email"></span>
                             </div>
 
                             <div class="form-group col-md-6">
                                 <label class="form-label">Rol: </label>
-                                <select class="form-control">
-                                    <option selected>Choose...</option>
-                                    <option>...</option>
+                                <select class="form-control" asp-for="UserType" asp-items="@(new SelectList(ViewBag.Roles,"Name","Name"))" onchange="Client()" required>
+                                    <option value="">Select a Roles</option>
                                 </select>
 
                             </div>
-
-
+                            </div>
+                           <div class="row mb-3">
+                             <div class="form-group col-md-6">
+                                <label class="form-label">Username: </label>
+                                <input class="form-control" asp-for="Username" />
+                                <span asp-validation-for="Username"></span>
+                            </div>
+                                <div class="col-md-6" id="div-amount">
+                                 <label class="form-label">Amount: </label>
+                                <input type="number" step="any" value="0" class="form-control" asp-for="Amount" />
+                                </div>
+                            </div>
+                            <div class="row mb-3">
                             <div class="form-group col-md-6">
-                                <label class="form-label">Contraseña: </label>
-                                <input class="form-control" />
-
+                                <label class="form-label">Password: </label>
+                                <input class="form-control" asp-for="Password" />
+                                <span asp-validation-for="Password"></span>
                             </div>
 
                             <div class="form-group col-md-6">
-                                <label class="form-label">Confirmar contraseña: </label>
-                                <input class="form-control" />
-
+                                <label class="form-label">Confirm Password: </label>
+                                <input class="form-control" asp-for="ConfirmPassword" />
+                                <span asp-validation-for="ConfirmPassword"></span>
                             </div>
+                            </div>
+                        <div class="float-end btn-group-md">
+                            <button class="btn btn-primary w-100">Save</button>
+                            <a class="btn btn-warning w-100">Cancel</a>
                         </div>
-                        <br>
-
-
-                        <div class="d-flex justify-content-between">
-                            <button type="submit" class="btn btn-primary ">Guardar</button>
-                            <a class="btn btn-warning ">Volver atras</a>
-                        </div>
-
                     </form>
-
-
-
-
                 </div>
 
             </div>
         </div>
     </div>
-
-</div>
+    </div>

@@ -61,8 +61,8 @@ namespace DominicanBanking.Infrastructure.Identity.Services
             response.FirstName = user.Name;
             response.LastName = user.LastName;
             response.Documents = user.Documents;
-            response.Email = user.Id;
-            response.UserName = user.Id;
+            response.Email = user.Email;
+            response.UserName = user.UserName;
 
             var RoleList = await _userManager.GetRolesAsync(user).ConfigureAwait(false);
 
@@ -89,6 +89,7 @@ namespace DominicanBanking.Infrastructure.Identity.Services
                 Documents = user.Documents,
                 Email = user.Email,
                 Roles = roles.ToList(),
+                UserName=user.UserName,
                 IsVerified = user.EmailConfirmed
                 };
 
