@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace DominicanBanking.Core.Application.Interfaces.Repository
 {
-    public interface IUserProductRepository : IGenericRepository<UserProduct>
+    public interface IBeneficiaryRepository : IGenericRepository<Beneficiary>
     {
-        Task<List<UserProduct>> GetIncludeAsync();
+
     }
 }

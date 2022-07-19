@@ -1,0 +1,43 @@
+﻿@using DominicanBanking.Core.Application.ViewModel.Payment
+@model SavePaymentViewModel
+
+@{
+    ViewData["Title"] = "Beneficiary Payment";
+}
+
+<div class="row d-flex justify-content-center mt-5">
+    <div class="col-4">
+        <div class="card card-border">
+            <div class="card-body">
+                <h3 class="card-title">Express Payment</h3>
+                <form method="post" asp-action="Beneficiary" asp-controller="Payment">
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label class="form-label">Account:</label>
+                            <select class="form-control" asp-items="ViewBag.Account" asp-for="IdentifyNumberFrom" required>
+                                <option value="">Select an Account</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="form-label">Beneficiary:</label>
+                            <select class="form-control" asp-items="ViewBag.Beneficiary" asp-for="IdentifyNumberTo" required>
+                                <option value="">Select an Beneficiary</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label class="form-label">Amount:</label>
+                            <input type="number" step="any" class="form-control" asp-for="Amount"/>
+                            <span asp-validation-for="Amount" class="text-danger"></span>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-6">
+                                <button type="submit" class="btn btn-success w-100">Pay</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

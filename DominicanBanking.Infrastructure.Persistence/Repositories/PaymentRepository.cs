@@ -10,17 +10,18 @@ using System.Threading.Tasks;
 
 namespace DominicanBanking.Infrastructure.Persistence.Repositories
 {
-    public class UserProductRepository:GenericRepository<UserProduct>, IUserProductRepository
+    public class PaymentRepository:GenericRepository<Payment>, IPaymentRepository
     {
         private readonly ApplicationContext _applicationContext;
-        public UserProductRepository(ApplicationContext applicationContext) : base(applicationContext)
+        public PaymentRepository(ApplicationContext applicationContext) : base(applicationContext)
         {
             _applicationContext = applicationContext;
         }
 
-        public async Task<List<UserProduct>> GetIncludeAsync() {
+        public async Task<List<Payment>> GetIncludeAsync() {
 
-            return await _applicationContext.Set<UserProduct>().Include(up => up.Product).ToListAsync();
+            return await _applicationContext.Set<Payment>().Include(up => up.TypePayment).ToListAsync();
+
         }
     }
 }

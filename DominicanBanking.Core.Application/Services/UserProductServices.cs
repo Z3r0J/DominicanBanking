@@ -20,5 +20,13 @@ namespace DominicanBanking.Core.Application.Services
             _productRepository = productRepository;
             _mapper = mapper;
         }
+
+        public async Task<List<UserProductViewModel>> GetAllViewModelWithIncludes() {
+
+            var response = await _productRepository.GetIncludeAsync();
+
+            return _mapper.Map<List<UserProductViewModel>>(response);
+        
+        }
     }
 }

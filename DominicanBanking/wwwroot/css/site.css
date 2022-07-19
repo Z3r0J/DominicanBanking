@@ -38,11 +38,6 @@
     src: url(https://raw.githack.com/googlefonts/noto-emoji/main/fonts/NotoColorEmoji.ttf);
 }
 
-nav {
-    height: 80px;
-}
-
-
 h1 {
     font-weight: bold;
     margin: 0;

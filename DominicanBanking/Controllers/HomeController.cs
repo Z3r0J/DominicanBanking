@@ -1,5 +1,9 @@
-﻿using DominicanBanking.Models;
+﻿using DominicanBanking.Core.Application.DTOS.Account;
+using DominicanBanking.Core.Application.Helpers;
+using DominicanBanking.Core.Application.Interfaces.Services;
+using DominicanBanking.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -13,9 +17,10 @@ namespace DominicanBanking.Controllers
     [Authorize]
     public class HomeController : Controller
     {
-        public HomeController()
+        private readonly IUserProductServices _userProductServices;
+        public HomeController(IUserProductServices userProductServices)
         {
-
+            _userProductServices = userProductServices;
         }
 
         [Authorize(Roles = "ADMINISTRATOR")]
@@ -25,9 +30,15 @@ namespace DominicanBanking.Controllers
         }
 
         [Authorize(Roles = "CLIENT")]
-        public IActionResult Client()
+        public async Task<IActionResult> Client()
         {
-            return View();
+            var info = HttpContext.Session.Get<AuthenticationResponse>("user");
+
+            var UserProduct = await _userProductServices.GetAllViewModelWithIncludes();
+
+
+
+            return View(UserProduct.Where(up=>up.UserId==info.Id).ToList());
         }
     }
 }

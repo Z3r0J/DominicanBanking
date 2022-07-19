@@ -1,0 +1,73 @@
+﻿@using DominicanBanking.Core.Application.ViewModel.Beneficiary
+@model List<BeneficiaryViewModel>
+
+@{
+}
+
+<div class="container-fluid mt-5">
+    <div class="row d-flex justify-content-center">
+        <div class="col-8">
+            <div class="d-flex justify-content-between ">
+                <h1 class="fw-bold text-start color">&nbsp;Beneficiary List</h1>
+                <a class="btn btn-primary btn-rounded" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa fa-plus"></i> </a>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Beneficiary</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12">
+                <form method="post" asp-action="Index" asp-controller="Beneficiary">
+                    <input type="text" Name="IdentifyNumber" id="IdentifyNumber" placeholder="Account Number" class="form-control" required/>
+                <button type="submit" class="btn btn-success mt-4 w-100">Add</button>
+                </form>
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+    <div class="row d-flex justify-content-center mt-5">
+        <div class="col-8">
+                   @Html.ValidationSummary(false,"",new{@class="text-danger"})
+            <table class="table table-hover table-striped border border-light rounded shadow">
+                <thead class="border border-light rounded-1">
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">FirstName</th>
+                        <th scope="col">LastName</th>
+                        <th scope="col">Account Number</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                 @foreach(var beneficiary in Model){
+                 <tr>
+                     <td>@beneficiary.Id</td>
+                     <td>@beneficiary.Name</td>
+                     <td>@beneficiary.LastName</td>
+                     <td>@beneficiary.IdentifyNumber</td>
+                     <td><a asp-action="Delete" asp-controller="Beneficiary" asp-route-id="@beneficiary.Id" class="btn btn-danger w-25 btn-rounded"><i class="fa fa-trash"></i></a></td>
+                 </tr>
+                 
+                 }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

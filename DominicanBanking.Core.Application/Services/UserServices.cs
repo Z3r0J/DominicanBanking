@@ -38,13 +38,32 @@ namespace DominicanBanking.Core.Application.Services
 
         }
 
+        public async Task<RegisterResponse> RegisterAdministratorAsync(SaveUserViewModel model) {
+
+            RegisterRequest request = _mapper.Map<RegisterRequest>(model);
+
+            return await _accountServices.RegisterAdministratorAsync(request);
+
+        }
+
         public async Task<List<UserViewModel>> GetAllUserAsync() {
 
             var response = await _accountServices.GetUsersAsync();
 
             return _mapper.Map<List<UserViewModel>>(response);
         
-        } 
+        }
+
+        public async Task<ActivateResponse> ActivateAsync(ActivateViewModel model) {
+
+           return await _accountServices.ActivateAsync(_mapper.Map<ActivateRequest>(model));
+
+        }
+        public async Task<ActivateResponse> DeactivateAsync(ActivateViewModel model) {
+
+           return await _accountServices.DeactivateAsync(_mapper.Map<ActivateRequest>(model));
+
+        }
 
         public async Task LogOutAsync() {
             await _accountServices.LogOutAsync();    
