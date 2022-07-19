@@ -1,4 +1,5 @@
-﻿using DominicanBanking.Core.Application.Interfaces.Services;
+﻿using AutoMapper;
+using DominicanBanking.Core.Application.Interfaces.Services;
 using DominicanBanking.Core.Application.ViewModel.UserProduct;
 using DominicanBanking.Core.Domain.Entities;
 using DominicanBanking.Infrastructure.Identity.Entities;
@@ -21,11 +22,13 @@ namespace DominicanBanking.WebApp.Controllers
         private readonly IUserProductServices _userProduct;
         private readonly IProductServices _productServices;
         private readonly IUserServices _userServices;
-        public UserProductController(IUserProductServices userProduct,UserManager<BankUsers> userManager,IProductServices productServices,IUserServices userServices)
+        private readonly IMapper _mapper;
+        public UserProductController(IUserProductServices userProduct,UserManager<BankUsers> userManager,IProductServices productServices,IUserServices userServices,IMapper mapper)
         {
             _userProduct = userProduct;
             _productServices = productServices;
             _userServices = userServices;
+            _mapper = mapper;
         }
 
         [Authorize(Roles="ADMINISTRATOR")]
@@ -93,14 +96,7 @@ namespace DominicanBanking.WebApp.Controllers
 
             var account = allAccount.FirstOrDefault(x=>x.Id==id);
 
-            return View(new SaveUserProductViewModel() {
-                Id=account.Id,
-                IdentifyNumber=account.IdentifyNumber,
-                Amount = account.Amount,
-                Limit=account.Limit,
-                IsPrincipal =account.IsPrincipal,
-                ProductId = account.ProductId,
-                UserId =account.UserId});
+            return View(_mapper.Map<SaveUserProductViewModel>(account));
 
         }
 
@@ -122,16 +118,7 @@ namespace DominicanBanking.WebApp.Controllers
 
                 PrincipalAccount.Amount+=model.Amount;
 
-                var SaveAccount = new SaveUserProductViewModel()
-                {
-                    Id = PrincipalAccount.Id,
-                    IdentifyNumber = PrincipalAccount.IdentifyNumber,
-                    Amount = PrincipalAccount.Amount,
-                    Limit = PrincipalAccount.Limit,
-                    IsPrincipal = PrincipalAccount.IsPrincipal,
-                    ProductId = PrincipalAccount.ProductId,
-                    UserId = PrincipalAccount.UserId
-                };
+                var SaveAccount = _mapper.Map<SaveUserProductViewModel>(PrincipalAccount);
 
                 await _userProduct.Update(SaveAccount, PrincipalAccount.Id);
 

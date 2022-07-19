@@ -3,6 +3,7 @@ using DominicanBanking.Core.Application.DTOS.Account;
 using DominicanBanking.Core.Application.ViewModel.Beneficiary;
 using DominicanBanking.Core.Application.ViewModel.Payment;
 using DominicanBanking.Core.Application.ViewModel.Product;
+using DominicanBanking.Core.Application.ViewModel.Question;
 using DominicanBanking.Core.Application.ViewModel.User;
 using DominicanBanking.Core.Application.ViewModel.UserProduct;
 using DominicanBanking.Core.Domain.Entities;
@@ -55,7 +56,15 @@ namespace DominicanBanking.Core.Application.Mapping
                .ForMember(x => x.CreatedBy, opt => opt.Ignore())
                .ForMember(x => x.Modified, opt => opt.Ignore())
                .ForMember(x => x.ModifiedBy, opt => opt.Ignore());
-            
+
+            CreateMap<QuestionViewModel, SavePaymentViewModel>()
+               .ReverseMap()
+               .ForMember(x => x.FullName, opt => opt.Ignore());
+
+            CreateMap<UserProductViewModel, SaveUserProductViewModel>()
+                .ReverseMap();
+                
+
             CreateMap<Payment, SavePaymentViewModel>()
                    .ReverseMap()
                    .ForMember(x => x.Created, opt => opt.Ignore())

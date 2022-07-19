@@ -12,7 +12,7 @@ namespace DominicanBanking.Core.Application.ViewModel.Question
         public double Amount { get; set; }
         public string IdentifyNumberTo { get; set; }
         public string IdentifyNumberFrom { get; set; }
-        public int TypePaymentId { get; set; }
+        public int TypeId { get; set; }
         public string UserId { get; set; }
     }
 }
