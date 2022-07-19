@@ -2,16 +2,16 @@
 @model SavePaymentViewModel
 
 @{
-    ViewData["Title"] = "Beneficiary Payment";
+    ViewData["Title"] = "Credit Card Payment";
 }
 
 <div class="row d-flex justify-content-center mt-5">
     <div class="col-4">
         <div class="card card-border">
             <div class="card-body">
-                <h3 class="card-title">Beneficiary Payment</h3>
+                <h3 class="card-title">Credit Card Payment</h3>
                @Html.ValidationSummary(false,"",new{@class="text-danger"})
-                <form method="post" asp-action="Beneficiary" asp-controller="Payment">
+                <form method="post" asp-action="CreditCard" asp-controller="Payment">
                     <div class="row">
                         <div class="form-group col-md-6">
                             <label class="form-label">Account:</label>
@@ -20,9 +20,9 @@
                             </select>
                         </div>
                         <div class="form-group col-md-6">
-                            <label class="form-label">Beneficiary:</label>
-                            <select class="form-control" asp-items="ViewBag.Beneficiary" asp-for="IdentifyNumberTo" required>
-                                <option value="">Select a Beneficiary</option>
+                            <label class="form-label">Credit Card:</label>
+                            <select class="form-control" asp-items="ViewBag.CreditCard" asp-for="IdentifyNumberTo" required>
+                                <option value="">Select a Credit Card</option>
                             </select>
                         </div>
                         <div class="form-group col-md-12">

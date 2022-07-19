@@ -46,6 +46,9 @@ namespace DominicanBanking.WebApp.Controllers
             var userLog = HttpContext.Session.Get<AuthenticationResponse>("user");
             if (!ModelState.IsValid)
             {
+
+                ViewBag.Account = new SelectList(allProduct.Where(x => x.UserId == userLog.Id && x.ProductId == 1).Select(x => new { Value = x.IdentifyNumber, Text = $"{x.IdentifyNumber} | Available: ${x.Amount}" }), "Value", "Text");
+
                 return View(model);
             }
             if (model.IdentifyNumberFrom == model.IdentifyNumberTo)
@@ -139,6 +142,127 @@ namespace DominicanBanking.WebApp.Controllers
         
         }
 
+        public async Task<IActionResult> CreditCard()
+        {
+            var allProduct = await _userProductServices.GetAllViewModelWithIncludes();
+
+            var userLog = HttpContext.Session.Get<AuthenticationResponse>("user");
+
+            ViewBag.Account = new SelectList(allProduct.Where(x => x.UserId == userLog.Id && x.ProductId == 1).Select(x => new { Value = x.IdentifyNumber, Text = $"{x.IdentifyNumber} - Available: ${x.Amount}" }), "Value", "Text");
+            ViewBag.CreditCard = new SelectList(allProduct.Where(x => x.UserId == userLog.Id && x.ProductId == 2).Select(x => new { Value = x.IdentifyNumber, Text = $"{x.IdentifyNumber} - Dues: ${x.Amount}" }), "Value", "Text");
+
+            return View(new SavePaymentViewModel());
+        }
+        [HttpPost]
+        public async Task<IActionResult> CreditCard(SavePaymentViewModel model) {
+
+            var userLog = HttpContext.Session.Get<AuthenticationResponse>("user");
+            var allProduct = await _userProductServices.GetAllViewModelWithIncludes();
+
+            if (!ModelState.IsValid)
+            {
+
+                ViewBag.Account = new SelectList(allProduct.Where(x => x.UserId == userLog.Id && x.ProductId == 1).Select(x => new { Value = x.IdentifyNumber, Text = $"{x.IdentifyNumber} - Available: ${x.Amount}" }), "Value", "Text");
+                ViewBag.CreditCard = new SelectList(allProduct.Where(x => x.UserId == userLog.Id && x.ProductId == 2).Select(x => new { Value = x.IdentifyNumber, Text = $"{x.IdentifyNumber} - Dues: ${x.Amount}" }), "Value", "Text");
+
+                return View(model);
+            }
+            var CreditCard = allProduct.FirstOrDefault(x=>x.IdentifyNumber == model.IdentifyNumberTo);
+            var Account = allProduct.FirstOrDefault(x=>x.IdentifyNumber == model.IdentifyNumberFrom);
+
+            if (CreditCard.Amount == 0) {
+
+                ViewBag.Account = new SelectList(allProduct.Where(x => x.UserId == userLog.Id && x.ProductId == 1).Select(x => new { Value = x.IdentifyNumber, Text = $"{x.IdentifyNumber} - Available: ${x.Amount}" }), "Value", "Text");
+                ViewBag.CreditCard = new SelectList(allProduct.Where(x => x.UserId == userLog.Id && x.ProductId == 2).Select(x => new { Value = x.IdentifyNumber, Text = $"{x.IdentifyNumber} - Dues: ${x.Amount}" }), "Value", "Text");
+
+                ModelState.AddModelError("IdentifyNumberTo", "This credit card hasn't debts. Select another oner");
+                return View(model);
+            }
+
+            if (model.Amount>Account.Amount)
+            {
+
+                ViewBag.Account = new SelectList(allProduct.Where(x => x.UserId == userLog.Id && x.ProductId == 1).Select(x => new { Value = x.IdentifyNumber, Text = $"{x.IdentifyNumber} - Available: ${x.Amount}" }), "Value", "Text");
+                ViewBag.CreditCard = new SelectList(allProduct.Where(x => x.UserId == userLog.Id && x.ProductId == 2).Select(x => new { Value = x.IdentifyNumber, Text = $"{x.IdentifyNumber} - Dues: ${x.Amount}" }), "Value", "Text");
+
+                ModelState.AddModelError("Amount", "The Amount is greater than your have in that account.");
+                return View(model);
+            }
+
+            if (model.Amount>CreditCard.Amount)
+            {
+                Account.Amount -= model.Amount;
+                CreditCard.Amount = model.Amount -= CreditCard.Amount;
+                Account.Amount += CreditCard.Amount;
+                CreditCard.Amount -=CreditCard.Amount;
+
+                var SaveFrom = new SaveUserProductViewModel()
+                {
+                    Id = Account.Id,
+                    IdentifyNumber = Account.IdentifyNumber,
+                    Amount = Account.Amount,
+                    IsPrincipal = Account.IsPrincipal,
+                    Limit = Account.Limit,
+                    ProductId = Account.ProductId,
+                    UserId = Account.UserId
+                };
+
+                var SaveTo = new SaveUserProductViewModel()
+                {
+                    Id = CreditCard.Id,
+                    IdentifyNumber = CreditCard.IdentifyNumber,
+                    Amount = CreditCard.Amount,
+                    IsPrincipal = CreditCard.IsPrincipal,
+                    Limit = CreditCard.Limit,
+                    ProductId = CreditCard.ProductId,
+                    UserId = CreditCard.UserId
+                };
+
+                model.UserId = userLog.Id;
+                model.TypeId = 2;
+
+                await _userProductServices.Update(SaveFrom, SaveFrom.Id);
+                await _userProductServices.Update(SaveTo, SaveTo.Id);
+                await _paymentServices.Add(model);
+            }
+            else
+            {
+                Account.Amount -= model.Amount;
+                CreditCard.Amount -= model.Amount;
+
+                var SaveFrom = new SaveUserProductViewModel()
+                {
+                    Id = Account.Id,
+                    IdentifyNumber = Account.IdentifyNumber,
+                    Amount = Account.Amount,
+                    IsPrincipal = Account.IsPrincipal,
+                    Limit = Account.Limit,
+                    ProductId = Account.ProductId,
+                    UserId = Account.UserId
+                };
+
+                var SaveTo = new SaveUserProductViewModel()
+                {
+                    Id = CreditCard.Id,
+                    IdentifyNumber = CreditCard.IdentifyNumber,
+                    Amount = CreditCard.Amount,
+                    IsPrincipal = CreditCard.IsPrincipal,
+                    Limit = CreditCard.Limit,
+                    ProductId = CreditCard.ProductId,
+                    UserId = CreditCard.UserId
+                };
+
+                model.UserId = userLog.Id;
+                model.TypeId = 2;
+
+                await _userProductServices.Update(SaveFrom, SaveFrom.Id);
+                await _userProductServices.Update(SaveTo, SaveTo.Id);
+                await _paymentServices.Add(model);
+            }
+
+            return RedirectToRoute(new {action="Client",controller="Home" });
+        }
+
         public async Task<IActionResult> Beneficiary() {
             
             var allProduct = await _userProductServices.GetAllViewModelWithIncludes();
@@ -156,9 +280,14 @@ namespace DominicanBanking.WebApp.Controllers
         public async Task<IActionResult> Beneficiary(SavePaymentViewModel model) {
 
             var allProduct = await _userProductServices.GetAllViewModelWithIncludes();
+            var allBeneficiary = await _beneficiaryServices.GetAllViewModel();
 
+            var userLog = HttpContext.Session.Get<AuthenticationResponse>("user");
 
             if (!ModelState.IsValid) {
+
+                ViewBag.Account = new SelectList(allProduct.Where(x => x.UserId == userLog.Id && x.ProductId == 1).Select(x => new { Value = x.IdentifyNumber, Text = $"{x.IdentifyNumber} | Available: ${x.Amount}" }), "Value", "Text");
+                ViewBag.Beneficiary = new SelectList(allBeneficiary.Where(x => x.UserId == userLog.Id).Select(x => new { Value = x.IdentifyNumber, Text = $"{x.Name} {x.LastName} | {x.IdentifyNumber}" }), "Value", "Text");
 
                 return View(model);
 
@@ -169,6 +298,10 @@ namespace DominicanBanking.WebApp.Controllers
             if (model.Amount>AccountFrom.Amount)
             {
                 ModelState.AddModelError("error", "The Amount is greater than your have in that account.");
+
+
+                ViewBag.Account = new SelectList(allProduct.Where(x => x.UserId == userLog.Id && x.ProductId == 1).Select(x => new { Value = x.IdentifyNumber, Text = $"{x.IdentifyNumber} | Available: ${x.Amount}" }), "Value", "Text");
+                ViewBag.Beneficiary = new SelectList(allBeneficiary.Where(x => x.UserId == userLog.Id).Select(x => new { Value = x.IdentifyNumber, Text = $"{x.Name} {x.LastName} | {x.IdentifyNumber}" }), "Value", "Text");
                 return View(model);
             }
 
