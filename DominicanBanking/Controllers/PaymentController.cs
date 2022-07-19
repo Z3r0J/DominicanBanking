@@ -19,11 +19,13 @@ namespace DominicanBanking.WebApp.Controllers
         private readonly IPaymentServices _paymentServices;
         private readonly IUserProductServices _userProductServices;
         private readonly IUserServices _userServices;
-        public PaymentController(IPaymentServices paymentServices, IUserProductServices userProductServices, IUserServices userServices)
+        private readonly IBeneficiaryServices _beneficiaryServices;
+        public PaymentController(IPaymentServices paymentServices, IUserProductServices userProductServices, IUserServices userServices,IBeneficiaryServices beneficiaryServices)
         {
             _paymentServices = paymentServices;
             _userProductServices = userProductServices;
             _userServices = userServices;
+            _beneficiaryServices = beneficiaryServices;
         }
 
         public async Task<IActionResult> Express()
@@ -48,7 +50,7 @@ namespace DominicanBanking.WebApp.Controllers
             }
             if (model.IdentifyNumberFrom == model.IdentifyNumberTo)
             {
-                ModelState.AddModelError("IdentifyNumberTo", "The account number is the same please write another account");
+                ModelState.AddModelError("IdentifyNumberTo", "The account number is the same, please write another account");
                 ViewBag.Account = new SelectList(allProduct.Where(x => x.UserId == userLog.Id && x.ProductId == 1).Select(x => new { Value = x.IdentifyNumber, Text = $"{x.IdentifyNumber} - Available: ${x.Amount}" }), "Value", "Text");
 
                 return View(model);
@@ -138,9 +140,51 @@ namespace DominicanBanking.WebApp.Controllers
         }
 
         public async Task<IActionResult> Beneficiary() {
+            
+            var allProduct = await _userProductServices.GetAllViewModelWithIncludes();
+            var allBeneficiary = await _beneficiaryServices.GetAllViewModel();
 
-            return View();
+            var userLog = HttpContext.Session.Get<AuthenticationResponse>("user");
+
+            ViewBag.Account = new SelectList(allProduct.Where(x => x.UserId == userLog.Id && x.ProductId == 1).Select(x => new { Value = x.IdentifyNumber, Text = $"{x.IdentifyNumber} | Available: ${x.Amount}" }), "Value", "Text");
+            ViewBag.Beneficiary = new SelectList(allBeneficiary.Where(x => x.UserId == userLog.Id).Select(x => new { Value = x.IdentifyNumber, Text = $"{x.Name} {x.LastName} | {x.IdentifyNumber}" }), "Value", "Text");
+
+            return View(new SavePaymentViewModel());
         
+        }
+        [HttpPost]
+        public async Task<IActionResult> Beneficiary(SavePaymentViewModel model) {
+
+            var allProduct = await _userProductServices.GetAllViewModelWithIncludes();
+
+
+            if (!ModelState.IsValid) {
+
+                return View(model);
+
+            }
+            var AccountFrom = allProduct.FirstOrDefault(r => r.IdentifyNumber == model.IdentifyNumberFrom);
+            var AccountTo = allProduct.FirstOrDefault(r => r.IdentifyNumber == model.IdentifyNumberTo);
+
+            if (model.Amount>AccountFrom.Amount)
+            {
+                ModelState.AddModelError("error", "The Amount is greater than your have in that account.");
+                return View(model);
+            }
+
+            var user = await _userServices.GetAllUserAsync();
+            model.TypeId = 4;
+
+            return View("QuestionExpress", new QuestionViewModel()
+            {
+                FullName = $"{user.FirstOrDefault(user => user.Id == AccountTo.UserId).FirstName} {user.FirstOrDefault(user => user.Id == AccountTo.UserId).LastName}",
+                IdentifyNumberTo = model.IdentifyNumberTo,
+                IdentifyNumberFrom = model.IdentifyNumberFrom,
+                Amount = model.Amount,
+                TypePaymentId = model.TypeId,
+                UserId = AccountFrom.UserId
+            });
+
         }
     }
 }
