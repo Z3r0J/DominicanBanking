@@ -5,13 +5,88 @@
 }
 <div class="container-fluid">
     <div class="card"></div>
-@foreach(var item in Model){
-    <div class="text-center">
-    @{if(item.IsPrincipal){<span>Is Principal</span>}else{<span>Is not Principal</span>}}
-    <h1 class="display-4">@item.IdentifyNumber</h1>
-    <p>@item.ProductName</p>
-</div>
+    @foreach (var item in Model)
+    {
+        <div class="text-center">
+            @{if (item.IsPrincipal)
+                {<span>Is Principal</span>}
+                else
+                {<span>Is not Principal</span>}}
+            <h1 class="display-4">@item.IdentifyNumber</h1>
+            <p>@item.ProductName</p>
+        </div>
 
-}
+    }
+    <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="card" style="width: 25rem; border: solid 2px blue; border-radius: 18px;">
+                    <div class="badge">Credit Card</div>
+                    <img src="https://www2.bac-assets.com/credit-cards/spa-assets/images/assets-images-site-targeted-content-credit-cards-bac_cc_overview_banner-default-card_sky.webp" class="card-img-top" alt="...">
+
+                    <div class="bank-details ">
+                        <span class="bank-catagory">Dominican Banking</span>
+                        <h4><a href="">Infomation User</a></h4>
+                        <ul>
+                            <li>
+                                Tipo de cuenta:
+                            </li>
+                            <li>Monto:</li>
+
+                        </ul>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-3 ">
+                <div class="card" style="width: 25rem; border: solid 2px blue; border-radius: 18px;">
+                    <div class="badge">Ahorro</div>
+                    <div class="image w-8">  <img src="https://cdn.raisin.co.uk/app/uploads/2020/06/pension-savings-account.png" class="card-img-top" alt="..."></div>
+
+
+                    <div class="bank-details ">
+                        <span class="bank-catagory">Dominican Banking</span>
+                        <h4><a href="">Infomation User</a></h4>
+                        <ul>
+                            <li>
+                                Tipo de cuenta:
+                            </li>
+                            <li>Monto:</li>
+
+                        </ul>
+
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- <h1>Prestamo</h1> -->
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="card" style="width: 25rem; border: solid 2px blue;  border-radius: 18px;">
+                    <div class="badge">Prestamo</div>
+                    <div class="image"><img class="" src="https://assets.fullertonindia.com/sites/default/files/instant_PL.png" alt="..."></div>
+
+
+                    <div class="bank-details ">
+                        <span class="bank-catagory">Dominican Banking</span>
+                        <h4><a href="">Infomation User</a></h4>
+                        <ul>
+                            <li>
+                                Tipo de cuenta:
+                            </li>
+                            <li>Monto:</li>
+
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
 </div>
 
