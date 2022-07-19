@@ -9,7 +9,7 @@
     <div class="col-4">
         <div class="card card-border">
             <div class="card-body">
-                <h3 class="card-title">Express Payment</h3>
+                <h3 class="card-title">Beneficiary Payment</h3>
                 <form method="post" asp-action="Beneficiary" asp-controller="Payment">
                     <div class="row">
                         <div class="form-group col-md-6">
@@ -30,8 +30,9 @@
                             <span asp-validation-for="Amount" class="text-danger"></span>
                         </div>
                         <div class="row mt-3">
-                            <div class="col-6">
+                            <div class="col-md-12">
                                 <button type="submit" class="btn btn-success w-100">Pay</button>
+                                <a asp-action="Client" asp-controller="Home" class="btn btn-warning w-100">Cancel</a>
                             </div>
                         </div>
                     </div>

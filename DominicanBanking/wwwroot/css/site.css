@@ -208,7 +208,7 @@ thead {
     font-size: 20px;
 }
 
-.badge {
+.type-account {
     position: absolute;
     left: 0;
     top: 20px;
@@ -227,7 +227,7 @@ thead {
     padding: 30px;
 }
 
-.bank-catagory {
+.bank-category {
     display: block;
     font-size: 12px;
     font-weight: 700;

@@ -47,6 +47,12 @@ namespace DominicanBanking.WebApp.Controllers
                 return View(beneficiaryWithoutFiltered.Where(b => b.UserId == userLog.Id).ToList());
             }
 
+            if (beneficiaryWithoutFiltered.Where(b=>b.UserId==userLog.Id).FirstOrDefault(x=>x.IdentifyNumber==IdentifyNumber)!=null)
+            {
+                ModelState.AddModelError("error", "This account is your beneficiary already.");
+                return View(beneficiaryWithoutFiltered.Where(b => b.UserId == userLog.Id).ToList());
+            }
+
             if (account.FirstOrDefault(x=>x.IdentifyNumber==IdentifyNumber&&x.UserId==userLog.Id)!=null)
             {
                 ModelState.AddModelError("error", "You cannot add you as a Beneficiary.");
