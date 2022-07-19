@@ -18,6 +18,7 @@ namespace DominicanBanking.Core.Application
             service.AddTransient<IUserProductServices, UserProductServices>();
             service.AddTransient<IProductServices, ProductServices>();
             service.AddTransient<IPaymentServices, PaymentServices>();
+            service.AddTransient<IBeneficiaryServices, BeneficiaryServices>();
             #endregion
 
         }

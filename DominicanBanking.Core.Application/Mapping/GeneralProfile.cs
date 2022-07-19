@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DominicanBanking.Core.Application.DTOS.Account;
 using DominicanBanking.Core.Application.ViewModel.Beneficiary;
+using DominicanBanking.Core.Application.ViewModel.Payment;
 using DominicanBanking.Core.Application.ViewModel.Product;
 using DominicanBanking.Core.Application.ViewModel.User;
 using DominicanBanking.Core.Application.ViewModel.UserProduct;
@@ -54,6 +55,28 @@ namespace DominicanBanking.Core.Application.Mapping
                .ForMember(x => x.CreatedBy, opt => opt.Ignore())
                .ForMember(x => x.Modified, opt => opt.Ignore())
                .ForMember(x => x.ModifiedBy, opt => opt.Ignore());
+            
+            CreateMap<Payment, SavePaymentViewModel>()
+                   .ReverseMap()
+                   .ForMember(x => x.Created, opt => opt.Ignore())
+                   .ForMember(x => x.TypePayment, opt => opt.Ignore())
+                   .ForMember(x => x.CreatedBy, opt => opt.Ignore())
+                   .ForMember(x => x.Modified, opt => opt.Ignore())
+                   .ForMember(x => x.ModifiedBy, opt => opt.Ignore());
+            
+            CreateMap<Beneficiary, BeneficiaryViewModel>()
+                   .ReverseMap()
+                   .ForMember(x => x.Created, opt => opt.Ignore())
+                   .ForMember(x => x.CreatedBy, opt => opt.Ignore())
+                   .ForMember(x => x.Modified, opt => opt.Ignore())
+                   .ForMember(x => x.ModifiedBy, opt => opt.Ignore());
+            
+            CreateMap<Beneficiary, SaveBeneficiaryViewModel>()
+                   .ReverseMap()
+                   .ForMember(x => x.Created, opt => opt.Ignore())
+                   .ForMember(x => x.CreatedBy, opt => opt.Ignore())
+                   .ForMember(x => x.Modified, opt => opt.Ignore())
+                   .ForMember(x => x.ModifiedBy, opt => opt.Ignore());
 
             CreateMap<ActivateRequest, ActivateViewModel>()
                 .ReverseMap();          
