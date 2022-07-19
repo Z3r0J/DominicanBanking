@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DominicanBanking.Core.Application.DTOS.Account;
 using DominicanBanking.Core.Application.ViewModel.Beneficiary;
+using DominicanBanking.Core.Application.ViewModel.CashAdvance;
 using DominicanBanking.Core.Application.ViewModel.Payment;
 using DominicanBanking.Core.Application.ViewModel.Product;
 using DominicanBanking.Core.Application.ViewModel.Question;
@@ -87,9 +88,36 @@ namespace DominicanBanking.Core.Application.Mapping
                    .ForMember(x => x.Modified, opt => opt.Ignore())
                    .ForMember(x => x.ModifiedBy, opt => opt.Ignore());
 
-            CreateMap<ActivateRequest, ActivateViewModel>()
-                .ReverseMap();          
+            CreateMap<CashAdvance, CashAdvanceViewModel>()
+                   .ReverseMap()
+                   .ForMember(x => x.Created, opt => opt.Ignore())
+                   .ForMember(x => x.CreatedBy, opt => opt.Ignore())
+                   .ForMember(x => x.Modified, opt => opt.Ignore())
+                   .ForMember(x => x.ModifiedBy, opt => opt.Ignore());
 
+            CreateMap<Beneficiary, SaveCashAdvanceViewModel>()
+                   .ReverseMap()
+                   .ForMember(x => x.Created, opt => opt.Ignore())
+                   .ForMember(x => x.CreatedBy, opt => opt.Ignore())
+                   .ForMember(x => x.Modified, opt => opt.Ignore())
+                   .ForMember(x => x.ModifiedBy, opt => opt.Ignore());
+
+            CreateMap<Transfer, TransferViewModel>()
+                   .ReverseMap()
+                   .ForMember(x => x.Created, opt => opt.Ignore())
+                   .ForMember(x => x.CreatedBy, opt => opt.Ignore())
+                   .ForMember(x => x.Modified, opt => opt.Ignore())
+                   .ForMember(x => x.ModifiedBy, opt => opt.Ignore());
+
+            CreateMap<Beneficiary, SaveTransferViewModel>()
+                   .ReverseMap()
+                   .ForMember(x => x.Created, opt => opt.Ignore())
+                   .ForMember(x => x.CreatedBy, opt => opt.Ignore())
+                   .ForMember(x => x.Modified, opt => opt.Ignore())
+                   .ForMember(x => x.ModifiedBy, opt => opt.Ignore());
+
+            CreateMap<ActivateRequest, ActivateViewModel>()
+                .ReverseMap(); 
         }
        
     }

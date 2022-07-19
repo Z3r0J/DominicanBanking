@@ -1,19 +1,16 @@
-﻿using DominicanBanking.Core.Domain.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DominicanBanking.Core.Domain.Entities
+namespace DominicanBanking.Core.Application.ViewModel.CashAdvance
 {
-    public class Transfer : AuditableBaseEntity
+    public class CashAdvanceViewModel
     {
-
-        public string IdentifyNumberFrom { get; set; }
+        public string CreditCardNumberFrom { get; set; }
         public double Amount { get; set; }
         public string IdentifyNumberTo { get; set; }
         public string UserId { get; set; }
-
     }
 }
