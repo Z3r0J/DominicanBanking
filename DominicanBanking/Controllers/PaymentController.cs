@@ -136,5 +136,11 @@ namespace DominicanBanking.WebApp.Controllers
             return RedirectToRoute(new {action="Client",controller="Home" });
         
         }
+
+        public async Task<IActionResult> Beneficiary() {
+
+            return View();
+        
+        }
     }
 }

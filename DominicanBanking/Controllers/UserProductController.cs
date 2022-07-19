@@ -86,5 +86,82 @@ namespace DominicanBanking.WebApp.Controllers
 
             return RedirectToAction("Index");
         }
+
+        public async Task<IActionResult> Delete(int id) {
+
+            var allAccount = await _userProduct.GetAllViewModelWithIncludes();
+
+            var account = allAccount.FirstOrDefault(x=>x.Id==id);
+
+            return View(new SaveUserProductViewModel() {
+                Id=account.Id,
+                IdentifyNumber=account.IdentifyNumber,
+                Amount = account.Amount,
+                Limit=account.Limit,
+                IsPrincipal =account.IsPrincipal,
+                ProductId = account.ProductId,
+                UserId =account.UserId});
+
+        }
+
+        [Authorize(Roles = "ADMINISTRATOR")]
+        [HttpPost]
+        public async Task<IActionResult> Delete(SaveUserProductViewModel model) {
+
+            var allAccount = await _userProduct.GetAllViewModelWithIncludes();
+            var account = allAccount.Where(user=>user.UserId == model.UserId).ToList();
+
+            if (model.IsPrincipal)
+            {
+                return RedirectToRoute(new { action = "Index", controller = "UserProduct" });
+            }
+
+            if (model.ProductId == 1)
+            {
+                var PrincipalAccount = account.FirstOrDefault(x => x.IsPrincipal == true);
+
+                PrincipalAccount.Amount+=model.Amount;
+
+                var SaveAccount = new SaveUserProductViewModel()
+                {
+                    Id = PrincipalAccount.Id,
+                    IdentifyNumber = PrincipalAccount.IdentifyNumber,
+                    Amount = PrincipalAccount.Amount,
+                    Limit = PrincipalAccount.Limit,
+                    IsPrincipal = PrincipalAccount.IsPrincipal,
+                    ProductId = PrincipalAccount.ProductId,
+                    UserId = PrincipalAccount.UserId
+                };
+
+                await _userProduct.Update(SaveAccount, PrincipalAccount.Id);
+
+                await _userProduct.Delete(model.Id);
+
+            }
+
+            if (model.ProductId == 2)
+            {
+                if (model.Amount>0)
+                {
+                    ModelState.AddModelError("error", "The Credit Card has debts");
+                    return View(model);
+                }
+
+                await _userProduct.Delete(model.Id);
+            }
+
+            if (model.ProductId == 3)
+            {
+                if (model.Amount>0)
+                {
+                    ModelState.AddModelError("error", "The Loan has debts");
+                    return View(model);
+                }
+
+                await _userProduct.Delete(model.Id);
+            }
+            return RedirectToRoute(new { action = "Index", controller = "UserProduct" });
+        }
+
     }
 }

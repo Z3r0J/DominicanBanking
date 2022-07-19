@@ -32,6 +32,7 @@
                         <th scope="col">Limit</th>
                         <th scope="col">Principal</th>
                         <th scope="col">Type</th>
+                        <th> </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -40,11 +41,12 @@
                    {
                      <tr>
                         <td>@item.IdentifyNumber</td>
-                        <td>@item.Amount</td>
+                        <td>@item.Amount.ToString("C")</td>
                         <td>@item.Limit</td>
                         <td><span class="@(item.IsPrincipal?"badge bg-warning text-dark":"badge bg-danger")">@(item.IsPrincipal?"TRUE":"FALSE")</span></td>
                         <td>@item.ProductName</td>
-                    </tr>   
+                            <td>@if (item.IsPrincipal) { }else{<a asp-action="Delete" asp-controller="UserProduct" asp-route-id="@item.Id" class="btn btn-danger btn-rounded w-25"><i class="fa fa-trash"></i></a>}</td>
+                        </tr>   
                    }
                    
                 </tbody>
