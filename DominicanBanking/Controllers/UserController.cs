@@ -4,6 +4,7 @@ using DominicanBanking.Core.Application.Helpers;
 using DominicanBanking.Core.Application.Interfaces.Services;
 using DominicanBanking.Core.Application.ViewModel.User;
 using DominicanBanking.Models;
+using DominicanBanking.WebApp.Middlewares;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -21,14 +22,22 @@ namespace DominicanBanking.Controllers
     {
         private readonly IUserServices _userServices;
         private readonly RoleManager<IdentityRole> _roleManager;
-        public UserController(IUserServices services,RoleManager<IdentityRole> roleManager)
+        private readonly ValidateUserSession _validateUserSession;
+        public UserController(IUserServices services,RoleManager<IdentityRole> roleManager, ValidateUserSession validateUserSession)
         {
             _userServices = services;
             _roleManager = roleManager;
+            _validateUserSession = validateUserSession;
         }
 
         public IActionResult Login()
         {
+            if (_validateUserSession.IsLogin())
+            {
+               var user = HttpContext.Session.Get<AuthenticationResponse>("user");
+                return RedirectToRoute(new { action = user.Roles.Any(r=>r=="ADMINISTRATOR")?"DashBoard":"Client", controller = "Home" });
+            }
+
             return View(new LoginViewModel());
         }
 
@@ -67,7 +76,10 @@ namespace DominicanBanking.Controllers
         }
         [Authorize(Roles="ADMINISTRATOR")]
         public async Task<IActionResult> UserList() {
-
+            if (!_validateUserSession.IsLogin())
+            {
+                return RedirectToRoute(new { action = "Login", controller = "User" });
+            }
 
             return View(await _userServices.GetAllUserAsync());
 
@@ -75,6 +87,11 @@ namespace DominicanBanking.Controllers
         [Authorize(Roles = "ADMINISTRATOR")]
         public async Task<IActionResult> Register()
         {
+            if (!_validateUserSession.IsLogin())
+            {
+                return RedirectToRoute(new { action = "Login", controller = "User" });
+            }
+
             ViewBag.Roles = await _roleManager.Roles.ToListAsync();
 
             return View(new SaveUserViewModel());
@@ -83,6 +100,11 @@ namespace DominicanBanking.Controllers
 
         [Authorize(Roles = "ADMINISTRATOR")]
         public async Task<IActionResult> Activate(string id) {
+
+            if (!_validateUserSession.IsLogin())
+            {
+                return RedirectToRoute(new { action = "Login", controller = "User" });
+            }
 
             var response = await _userServices.GetAllUserAsync();
             var user = response.FirstOrDefault(user => user.Id == id);
@@ -110,6 +132,11 @@ namespace DominicanBanking.Controllers
         
         [Authorize(Roles = "ADMINISTRATOR")]
         public async Task<IActionResult> Deactivate(string id) {
+
+            if (!_validateUserSession.IsLogin())
+            {
+                return RedirectToRoute(new { action = "Login", controller = "User" });
+            }
 
             var response = await _userServices.GetAllUserAsync();
             var user = response.FirstOrDefault(user => user.Id == id);

@@ -8,6 +8,7 @@ namespace DominicanBanking.Core.Application.ViewModel.Transfer
 {
     public class TransferViewModel
     {
+        public int Id { get; set; }
         public string IdentifyNumberFrom { get; set; }
         public double Amount { get; set; }
         public string IdentifyNumberTo { get; set; }

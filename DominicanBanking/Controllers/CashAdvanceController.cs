@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using DominicanBanking.Core.Application.ViewModel.UserProduct;
+using DominicanBanking.WebApp.Middlewares;
 
 namespace DominicanBanking.WebApp.Controllers
 {
@@ -18,14 +19,21 @@ namespace DominicanBanking.WebApp.Controllers
         private readonly ICashAdvanceServices _cashAdvanceServices;
         private readonly IUserProductServices _userProductServices;
         private readonly IMapper _mapper;
-        public CashAdvanceController(IUserProductServices userProductServices,ICashAdvanceServices cashAdvanceServices,IMapper mapper)
+        private readonly ValidateUserSession _validateUserSession;
+
+        public CashAdvanceController(IUserProductServices userProductServices,ICashAdvanceServices cashAdvanceServices,IMapper mapper, ValidateUserSession validateUserSession)
         {
             _userProductServices = userProductServices;
             _cashAdvanceServices = cashAdvanceServices;
             _mapper = mapper;
+            _validateUserSession = validateUserSession;
         }
         public async Task<IActionResult> New()
         {
+            if (!_validateUserSession.IsLogin())
+            {
+                return RedirectToRoute(new { action = "Login", controller = "User" });
+            }
             var userLog = HttpContext.Session.Get<AuthenticationResponse>("user");
             var allProduct = await _userProductServices.GetAllViewModelWithIncludes();
 

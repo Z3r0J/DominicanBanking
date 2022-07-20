@@ -2,6 +2,7 @@
 using DominicanBanking.Core.Application.Helpers;
 using DominicanBanking.Core.Application.Interfaces.Services;
 using DominicanBanking.Core.Application.ViewModel.Beneficiary;
+using DominicanBanking.WebApp.Middlewares;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
@@ -14,16 +15,23 @@ namespace DominicanBanking.WebApp.Controllers
         private readonly IBeneficiaryServices _beneficiaryServices;
         private readonly IUserProductServices _userProductServices;
         private readonly IUserServices _userServices;
+        private readonly ValidateUserSession _validateUserSession;
 
-        public BeneficiaryController(IBeneficiaryServices beneficiaryServices, IUserProductServices userProductServices,IUserServices userServices)
+        public BeneficiaryController(IBeneficiaryServices beneficiaryServices, IUserProductServices userProductServices,IUserServices userServices,ValidateUserSession validateUserSession)
         {
             _beneficiaryServices = beneficiaryServices;
             _userProductServices = userProductServices;
             _userServices = userServices;
+            _validateUserSession = validateUserSession;
         }
         [Authorize(Roles = "CLIENT")]
         public  async Task<IActionResult> Index()
         {
+            if (!_validateUserSession.IsLogin())
+            {
+                return RedirectToRoute(new { action = "Login", controller = "User" });
+            }
+
             var beneficiaryWithoutFiltered = await _beneficiaryServices.GetAllViewModel();
             var userLog = HttpContext.Session.Get<AuthenticationResponse>("user");
 

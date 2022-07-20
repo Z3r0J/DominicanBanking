@@ -5,6 +5,7 @@ using DominicanBanking.Core.Application.Interfaces.Services;
 using DominicanBanking.Core.Application.ViewModel.Payment;
 using DominicanBanking.Core.Application.ViewModel.Question;
 using DominicanBanking.Core.Application.ViewModel.UserProduct;
+using DominicanBanking.WebApp.Middlewares;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -22,17 +23,26 @@ namespace DominicanBanking.WebApp.Controllers
         private readonly IUserServices _userServices;
         private readonly IBeneficiaryServices _beneficiaryServices;
         private readonly IMapper _mapper;
-        public PaymentController(IPaymentServices paymentServices, IUserProductServices userProductServices, IUserServices userServices,IBeneficiaryServices beneficiaryServices,IMapper mapper)
+        private readonly ValidateUserSession _validateUserSession;
+
+        public PaymentController(IPaymentServices paymentServices, IUserProductServices userProductServices, IUserServices userServices,IBeneficiaryServices beneficiaryServices,IMapper mapper, ValidateUserSession validateUserSession)
         {
             _paymentServices = paymentServices;
             _userProductServices = userProductServices;
             _userServices = userServices;
             _beneficiaryServices = beneficiaryServices;
             _mapper = mapper;
+            _validateUserSession = validateUserSession;
+
         }
 
         public async Task<IActionResult> Express()
         {
+            if (!_validateUserSession.IsLogin())
+            {
+                return RedirectToRoute(new { action = "Login", controller = "User" });
+            }
+
             var allProduct = await _userProductServices.GetAllViewModelWithIncludes();
 
             var userLog = HttpContext.Session.Get<AuthenticationResponse>("user");
@@ -123,6 +133,11 @@ namespace DominicanBanking.WebApp.Controllers
 
         public async Task<IActionResult> CreditCard()
         {
+            if (!_validateUserSession.IsLogin())
+            {
+                return RedirectToRoute(new { action = "Login", controller = "User" });
+            }
+
             var allProduct = await _userProductServices.GetAllViewModelWithIncludes();
 
             var userLog = HttpContext.Session.Get<AuthenticationResponse>("user");
@@ -210,6 +225,11 @@ namespace DominicanBanking.WebApp.Controllers
 
         public async Task<IActionResult> Loan()
         {
+            if (!_validateUserSession.IsLogin())
+            {
+                return RedirectToRoute(new { action = "Login", controller = "User" });
+            }
+
             var allProduct = await _userProductServices.GetAllViewModelWithIncludes();
 
             var userLog = HttpContext.Session.Get<AuthenticationResponse>("user");
@@ -299,7 +319,12 @@ namespace DominicanBanking.WebApp.Controllers
 
 
         public async Task<IActionResult> Beneficiary() {
-            
+
+            if (!_validateUserSession.IsLogin())
+            {
+                return RedirectToRoute(new { action = "Login", controller = "User" });
+            }
+
             var allProduct = await _userProductServices.GetAllViewModelWithIncludes();
             var allBeneficiary = await _beneficiaryServices.GetAllViewModel();
 

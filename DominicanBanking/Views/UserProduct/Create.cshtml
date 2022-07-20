@@ -19,12 +19,14 @@ $(document).ready(
         if (type == "2") {
             const div = document.getElementById("div-limit");
             div.style.display = "flex";
+            $("#Amount").prop('readonly', true);
 
         }
         else {
             const div = document.getElementById("div-limit");
             $("#Limit").val(0);
             div.style.display = "none";
+            $("#Amount").prop('readonly', false);
         }
     
     }
