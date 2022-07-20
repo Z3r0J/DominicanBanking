@@ -118,7 +118,12 @@ namespace DominicanBanking.Core.Application.Mapping
                    .ForMember(x => x.ModifiedBy, opt => opt.Ignore());
 
             CreateMap<ActivateRequest, ActivateViewModel>()
-                .ReverseMap(); 
+                .ReverseMap();
+
+            CreateMap<EditRequest, SaveEditViewModel>()
+                .ForMember(x=>x.UserType,opt=>opt.Ignore())
+                .ForMember(x => x.Amount, opt => opt.Ignore())
+                .ReverseMap();
         }
        
     }
