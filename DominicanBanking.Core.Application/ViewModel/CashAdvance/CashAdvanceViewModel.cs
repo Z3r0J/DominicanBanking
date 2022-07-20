@@ -8,6 +8,7 @@ namespace DominicanBanking.Core.Application.ViewModel.CashAdvance
 {
     public class CashAdvanceViewModel
     {
+        public int Id { get; set; }
         public string CreditCardNumberFrom { get; set; }
         public double Amount { get; set; }
         public string IdentifyNumberTo { get; set; }

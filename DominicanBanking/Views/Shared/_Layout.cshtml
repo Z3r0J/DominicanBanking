@@ -58,13 +58,21 @@
 
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                     <li><a class="dropdown-item" asp-action="Express" asp-controller="Payment">Express Payment</a></li>
+                                    <li><a class="dropdown-item" asp-action="CreditCard" asp-controller="Payment">Credit Card Payment</a></li>
+                                    <li><a class="dropdown-item" asp-action="Loan" asp-controller="Payment">Loan Payment</a></li>
                                     <li><a class="dropdown-item" asp-action="Beneficiary" asp-controller="Payment">Beneficiary Payment</a></li>
                                 </ul>
                             </li>
                             <li class="nav-item ms-2">
                                 <a class="nav_item" asp-action="Index" asp-controller="Beneficiary">
-                                 <i class="fas fa-piggy-bank fa-sm"></i>
+                                 <i class="fas fa-piggy-bank fa-sm ms-1"></i>
                                  Beneficiary
+                                 </a>
+                            </li>
+                            <li class="nav-item ms-3">
+                                <a class="nav_item" asp-action="New" asp-controller="CashAdvance">
+                                 <i class="fab fa-cc-visa fa-sm ms-1 text-dark"></i>
+                                 Cash Advances
                                  </a>
                             </li>
 
