@@ -1,0 +1,45 @@
+﻿@using DominicanBanking.Core.Application.ViewModel.Transfer
+@model SaveTransferViewModel
+
+@{
+    ViewData["Title"] = "Transfer A2A";
+}
+
+<div class="row d-flex justify-content-center mt-5">
+    <div class="col-4">
+        <div class="card">
+            <div class="card-header bg-primary"><h3 class="card-title text-white text-center">Transfer between Account</h3></div>
+            <div class="card-body">
+               @Html.ValidationSummary(false,"",new{@class="text-danger"})
+                <form method="post" asp-action="Create" asp-controller="Transfer">
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label class="form-label">Account From:</label>
+                            <select class="form-control" asp-items="ViewBag.AccountFrom" asp-for="IdentifyNumberFrom" required>
+                                <option value="">Select an Account</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="form-label">Account To:</label>
+                            <select class="form-control" asp-items="ViewBag.AccountTo" asp-for="IdentifyNumberTo" required>
+                                <option value="">Select an Account</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label class="form-label">Amount:</label>
+                            <input type="number" step="any" class="form-control" asp-for="Amount"/>
+                            <span asp-validation-for="Amount" class="text-danger"></span>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-primary w-100">Transfer</button>
+                                <a asp-action="Client" asp-controller="Home" class="btn btn-warning w-100">Cancel</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

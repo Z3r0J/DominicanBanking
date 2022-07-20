@@ -9,6 +9,7 @@ namespace DominicanBanking.Core.Application.ViewModel.Payment
 {
     public class SavePaymentViewModel
     {
+        [Required(ErrorMessage = "The Account Number is required")]
         public string IdentifyNumberFrom { get; set; }
         [Required(ErrorMessage ="The amount is required")]
         [Range(1.00,double.MaxValue,ErrorMessage ="The Amount have been greater than 0")]

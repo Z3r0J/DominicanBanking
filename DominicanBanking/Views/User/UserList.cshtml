@@ -6,6 +6,8 @@
 @inject IHttpContextAccessor httpContextAccessor
 @{
     var User = httpContextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
+        ViewData["Title"] ="List User";
+
 }
 
 <div class="container-fluid mt-5">

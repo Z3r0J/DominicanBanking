@@ -82,5 +82,27 @@ namespace DominicanBanking.WebApp.Controllers
             return RedirectToRoute(new {action="Index",controller="Beneficiary" });
 
         }
+
+        public async Task<IActionResult> Delete(int id) {
+
+            var beneficiary = await _beneficiaryServices.GetByIdSaveViewModel(id);
+            var userLog = HttpContext.Session.Get<AuthenticationResponse>("user");
+
+            if (beneficiary.UserId!=userLog.Id)
+            {
+                return RedirectToRoute(new { action = "Index", controller = "Beneficiary" });
+            }
+
+
+            return View(beneficiary);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Delete(SaveBeneficiaryViewModel model) {
+
+            await _beneficiaryServices.Delete(model.Id);
+
+            return RedirectToRoute(new { action = "Index", controller = "Beneficiary" });
+        
+        }
     }
 }
