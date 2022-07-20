@@ -13,5 +13,7 @@ namespace DominicanBanking.Core.Application.Interfaces.Services
         Task<RegisterResponse> RegisterAdministratorAsync(RegisterRequest request);
         Task<RegisterResponse> RegisterClientUserAsync(RegisterRequest request);
         Task<List<AccountResponse>> GetUsersAsync();
+        Task<PasswordResponse> ChangePasswordAsync(PasswordRequest request);
+        Task<EditResponse> EditAccountAsync(EditRequest request);
     }
 }

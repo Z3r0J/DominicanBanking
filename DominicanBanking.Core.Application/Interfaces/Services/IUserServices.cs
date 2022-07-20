@@ -17,6 +17,8 @@ namespace DominicanBanking.Core.Application.Interfaces.Services
         Task<ActivateResponse> DeactivateAsync(ActivateViewModel model);
         Task LogOutAsync();
         Task<List<UserViewModel>> GetAllUserAsync();
+        Task<PasswordResponse> ChangePasswordAsync(PasswordRequest password);
+        Task<EditResponse> EditUserAsync(SaveEditViewModel vm);
 
     }
 }

@@ -1,18 +1,15 @@
-﻿using DominicanBanking.Core.Application.DTOS.Account;
+﻿using AutoMapper;
+using DominicanBanking.Core.Application.DTOS.Account;
 using DominicanBanking.Core.Application.Enums;
 using DominicanBanking.Core.Application.Helpers;
 using DominicanBanking.Core.Application.Interfaces.Services;
 using DominicanBanking.Core.Application.ViewModel.User;
-using DominicanBanking.Models;
+using DominicanBanking.Core.Application.ViewModel.UserProduct;
 using DominicanBanking.WebApp.Middlewares;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -23,11 +20,15 @@ namespace DominicanBanking.Controllers
         private readonly IUserServices _userServices;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ValidateUserSession _validateUserSession;
-        public UserController(IUserServices services,RoleManager<IdentityRole> roleManager, ValidateUserSession validateUserSession)
+        private readonly IUserProductServices _userProductServices;
+        private readonly IMapper _mapper;
+        public UserController(IUserServices services,RoleManager<IdentityRole> roleManager, ValidateUserSession validateUserSession, IUserProductServices userProductServices,IMapper mapper)
         {
             _userServices = services;
             _roleManager = roleManager;
             _validateUserSession = validateUserSession;
+            _userProductServices = userProductServices;
+            _mapper = mapper;
         }
 
         public IActionResult Login()
@@ -39,6 +40,15 @@ namespace DominicanBanking.Controllers
             }
 
             return View(new LoginViewModel());
+        }
+
+        public IActionResult AccessDenied() {
+            if (!_validateUserSession.IsLogin())
+            {
+                return RedirectToRoute(new { action = "Login", controller = "User" });
+            }
+
+            return View();
         }
 
         [HttpPost]
@@ -199,5 +209,91 @@ namespace DominicanBanking.Controllers
                 return RedirectToAction("UserList");
             }
         }
+        [Authorize(Roles = "ADMINISTRATOR")]
+        public async Task<IActionResult> Edit(string id)
+        {
+            var userWithoutFilter = await _userServices.GetAllUserAsync();
+
+            var userFiltered = userWithoutFilter.FirstOrDefault(x => x.Id == id);
+
+            return View(new SaveEditViewModel()
+            {
+                Id = userFiltered.Id,
+                Documents = userFiltered.Documents,
+                Email = userFiltered.Email,
+                UserType = userFiltered.Roles.FirstOrDefault(),
+                LastName =userFiltered.LastName,
+                Name = userFiltered.FirstName,
+                Username = userFiltered.UserName,
+                Phone =userFiltered.Phone
+            });
+
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "ADMINISTRATOR")]
+        public async Task<IActionResult> EditClient(SaveEditViewModel vm) {
+
+            if (!ModelState.IsValid)
+            {
+                return View("Edit", vm);
+            }
+
+            if (!string.IsNullOrEmpty(vm.Password))
+            {
+                PasswordRequest request = new() {UserId=vm.Id,NewPassword=vm.Password };
+
+                var response = await _userServices.ChangePasswordAsync(request);
+
+                if (response.HasError)
+                {
+                    vm.HasError = response.HasError;
+                    vm.Error = response.Error;
+                    return View("Edit", vm);
+                }
+            }
+
+            var product = await _userProductServices.GetAllViewModelWithIncludes();
+
+            var Principal = product.FirstOrDefault(x => x.UserId == vm.Id && x.IsPrincipal == true);
+            Principal.Amount += vm.Amount.Value;
+
+            await _userServices.EditUserAsync(vm);
+            await _userProductServices.Update(_mapper.Map<SaveUserProductViewModel>(Principal),Principal.Id);
+
+            return RedirectToRoute(new { action = "UserList", controller = "User" });
+
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "ADMINISTRATOR")]
+        public async Task<IActionResult> EditAdministrator(SaveEditViewModel vm)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return View("Edit", vm);
+            }
+
+            if (!string.IsNullOrEmpty(vm.Password))
+            {
+                PasswordRequest request = new() { UserId = vm.Id, NewPassword = vm.Password };
+
+                var response = await _userServices.ChangePasswordAsync(request);
+
+                if (response.HasError)
+                {
+                    vm.HasError = response.HasError;
+                    vm.Error = response.Error;
+                    return View("Edit", vm);
+                }
+            }
+
+            await _userServices.EditUserAsync(vm);
+
+            return RedirectToRoute(new { action = "UserList", controller = "User" });
+
+        }
+
     }
 }

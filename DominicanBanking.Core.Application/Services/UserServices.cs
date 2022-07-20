@@ -30,6 +30,22 @@ namespace DominicanBanking.Core.Application.Services
             return response;
         }
 
+        public async Task<PasswordResponse> ChangePasswordAsync(PasswordRequest password) {
+
+            PasswordResponse response = await _accountServices.ChangePasswordAsync(password);
+
+            return response;
+
+        }
+
+        public async Task<EditResponse> EditUserAsync(SaveEditViewModel vm) {
+            EditRequest request = _mapper.Map<EditRequest>(vm);
+
+            EditResponse response = await _accountServices.EditAccountAsync(request);
+
+            return response;
+        }
+
         public async Task<RegisterResponse> RegisterClientAsync(SaveUserViewModel model) { 
             
             RegisterRequest request = _mapper.Map<RegisterRequest>(model);
