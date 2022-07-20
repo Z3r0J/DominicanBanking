@@ -42,6 +42,15 @@ namespace DominicanBanking.Controllers
             return View(new LoginViewModel());
         }
 
+        public IActionResult AccessDenied() {
+            if (!_validateUserSession.IsLogin())
+            {
+                return RedirectToRoute(new { action = "Login", controller = "User" });
+            }
+
+            return View();
+        }
+
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel vm) {
 
