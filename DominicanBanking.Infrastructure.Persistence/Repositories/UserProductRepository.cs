@@ -21,8 +21,6 @@ namespace DominicanBanking.Infrastructure.Persistence.Repositories
         public async Task<List<UserProduct>> GetIncludeAsync() {
 
             return await _applicationContext.Set<UserProduct>().Include(up => up.Product).ToListAsync();
-
-
         }
     }
 }

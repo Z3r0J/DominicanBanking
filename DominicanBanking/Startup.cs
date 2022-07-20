@@ -1,6 +1,7 @@
 using DominicanBanking.Core.Application;
 using DominicanBanking.Infrastructure.Identity;
 using DominicanBanking.Infrastructure.Persistence;
+using DominicanBanking.WebApp.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -31,6 +32,7 @@ namespace DominicanBanking
             services.AddPersistenceInfrastructure(Configuration);
             services.AddIdentityInfrastructure(Configuration);
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddTransient<ValidateUserSession, ValidateUserSession>();
             services.AddApplicationLayer();
             services.AddControllersWithViews();
         }

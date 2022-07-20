@@ -1,6 +1,8 @@
 ﻿@using DominicanBanking.Core.Application.ViewModel.User
 @model SaveUserViewModel
 @{
+        ViewData["Title"] ="New User";
+
 }
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -109,7 +111,7 @@ $(document).ready(
                             </div>
                         <div class="float-end btn-group-md">
                             <button class="btn btn-primary w-100">Save</button>
-                            <a class="btn btn-warning w-100">Cancel</a>
+                            <a class="btn btn-warning w-100" asp-action="UserList" asp-controller="User">Cancel</a>
                         </div>
                     </form>
                 </div>

@@ -15,6 +15,5 @@ namespace DominicanBanking.Core.Domain.Entities
         public string IdentifyNumberTo { get; set; }
         public string UserId { get; set; }
 
-
     }
 }

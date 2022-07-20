@@ -1,0 +1,27 @@
+﻿@using DominicanBanking.Core.Application.ViewModel.Beneficiary
+
+@model SaveBeneficiaryViewModel
+
+@{
+    ViewData["Title"] = "Delete Beneficiary";
+}
+
+<div class="container-fluid">
+        <div class="row d-flex justify-content-center mt-5">
+<div class="col-md-3">
+            <div class="card card-border">
+            <div class="card-body">
+                <h3 class="card-title fw-bold">Answer the question</h3>
+                <h4 class="text-center">Are you sure want to delete @Model.Name @Model.LastName from your beneficiary? </h4>
+                <form asp-action="Delete" asp-controller="Beneficiary">
+                    <input asp-for="Id" type="hidden" />
+
+                    <button type="submit" class="btn btn-primary w-100 text-center">Yes</button>
+                    <a asp-action="Index" asp-controller="Beneficiary" class="btn btn-warning w-100">Cancel</a>
+                </form>
+            </div>
+        </div>
+</div>
+    </div>
+
+</div>

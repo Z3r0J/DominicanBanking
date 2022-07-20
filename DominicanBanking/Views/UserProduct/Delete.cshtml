@@ -1,0 +1,34 @@
+﻿@using DominicanBanking.Core.Application.ViewModel.UserProduct
+
+@model SaveUserProductViewModel
+
+@{
+        ViewData["Title"] ="Delete Product";
+}
+
+<div class="container-fluid">
+        <div class="row d-flex justify-content-center mt-5">
+<div class="col-md-3">
+            <div class="card card-border">
+            <div class="card-body">
+                                   @Html.ValidationSummary(false,"",new{@class="alert alert-danger"})
+                <h3 class="card-title fw-bold">Answer the question</h3>
+                <h4 class="text-center">Are you sure want to delete the @Model.IdentifyNumber? </h4>
+                <form asp-action="Delete" asp-controller="UserProduct">
+                    <input asp-for="Amount" type="hidden" />
+                    <input asp-for="Id" type="hidden" />
+                    <input asp-for="IdentifyNumber" type="hidden" />
+                    <input asp-for="IsPrincipal" type="hidden" />
+                    <input asp-for="ProductId" type="hidden" />
+                    <input asp-for="Limit" type="hidden" />
+                    <input asp-for="UserId" type="hidden" />
+
+                    <button type="submit" class="btn btn-primary w-100 text-center">Accept</button>
+                    <a asp-action="Index" asp-controller="UserProduct" class="btn btn-warning w-100">Cancel</a>
+                </form>
+            </div>
+        </div>
+</div>
+    </div>
+
+</div>

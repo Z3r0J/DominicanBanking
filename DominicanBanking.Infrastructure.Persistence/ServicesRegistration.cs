@@ -4,7 +4,6 @@ using DominicanBanking.Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace DominicanBanking.Infrastructure.Persistence
 {
@@ -33,7 +32,10 @@ namespace DominicanBanking.Infrastructure.Persistence
             service.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             service.AddTransient<IUserProductRepository, UserProductRepository>();
             service.AddTransient<IProductRepository, ProductRepository>();
-
+            service.AddTransient<IPaymentRepository, PaymentRepository>();
+            service.AddTransient<IBeneficiaryRepository, BeneficiaryRepository>();
+            service.AddTransient<ICashAdvanceRepository, CashAdvanceRepository>();
+            service.AddTransient<ITransferRepository, TransferRepository>();
             #endregion
         }
 

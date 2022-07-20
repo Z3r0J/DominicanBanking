@@ -1,4 +1,5 @@
-﻿using DominicanBanking.Core.Application.Interfaces.Services;
+﻿using AutoMapper;
+using DominicanBanking.Core.Application.Interfaces.Services;
 using DominicanBanking.Core.Application.ViewModel.UserProduct;
 using DominicanBanking.Core.Domain.Entities;
 using DominicanBanking.Infrastructure.Identity.Entities;
@@ -21,11 +22,13 @@ namespace DominicanBanking.WebApp.Controllers
         private readonly IUserProductServices _userProduct;
         private readonly IProductServices _productServices;
         private readonly IUserServices _userServices;
-        public UserProductController(IUserProductServices userProduct,UserManager<BankUsers> userManager,IProductServices productServices,IUserServices userServices)
+        private readonly IMapper _mapper;
+        public UserProductController(IUserProductServices userProduct,UserManager<BankUsers> userManager,IProductServices productServices,IUserServices userServices,IMapper mapper)
         {
             _userProduct = userProduct;
             _productServices = productServices;
             _userServices = userServices;
+            _mapper = mapper;
         }
 
         [Authorize(Roles="ADMINISTRATOR")]
@@ -86,5 +89,66 @@ namespace DominicanBanking.WebApp.Controllers
 
             return RedirectToAction("Index");
         }
+
+        public async Task<IActionResult> Delete(int id) {
+
+            var allAccount = await _userProduct.GetAllViewModelWithIncludes();
+
+            var account = allAccount.FirstOrDefault(x=>x.Id==id);
+
+            return View(_mapper.Map<SaveUserProductViewModel>(account));
+
+        }
+
+        [Authorize(Roles = "ADMINISTRATOR")]
+        [HttpPost]
+        public async Task<IActionResult> Delete(SaveUserProductViewModel model) {
+
+            var allAccount = await _userProduct.GetAllViewModelWithIncludes();
+            var account = allAccount.Where(user=>user.UserId == model.UserId).ToList();
+
+            if (model.IsPrincipal)
+            {
+                return RedirectToRoute(new { action = "Index", controller = "UserProduct" });
+            }
+
+            if (model.ProductId == 1)
+            {
+                var PrincipalAccount = account.FirstOrDefault(x => x.IsPrincipal == true);
+
+                PrincipalAccount.Amount+=model.Amount;
+
+                var SaveAccount = _mapper.Map<SaveUserProductViewModel>(PrincipalAccount);
+
+                await _userProduct.Update(SaveAccount, PrincipalAccount.Id);
+
+                await _userProduct.Delete(model.Id);
+
+            }
+
+            if (model.ProductId == 2)
+            {
+                if (model.Amount>0)
+                {
+                    ModelState.AddModelError("error", "The Credit Card has debts");
+                    return View(model);
+                }
+
+                await _userProduct.Delete(model.Id);
+            }
+
+            if (model.ProductId == 3)
+            {
+                if (model.Amount>0)
+                {
+                    ModelState.AddModelError("error", "The Loan has debts");
+                    return View(model);
+                }
+
+                await _userProduct.Delete(model.Id);
+            }
+            return RedirectToRoute(new { action = "Index", controller = "UserProduct" });
+        }
+
     }
 }

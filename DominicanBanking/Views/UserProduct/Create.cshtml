@@ -1,6 +1,8 @@
 ﻿@using DominicanBanking.Core.Application.ViewModel.UserProduct
 @model SaveUserProductViewModel
 @{
+     ViewData["Title"] = "Create Product";
+
 }
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -19,12 +21,14 @@ $(document).ready(
         if (type == "2") {
             const div = document.getElementById("div-limit");
             div.style.display = "flex";
+            $("#Amount").prop('readonly', true);
 
         }
         else {
             const div = document.getElementById("div-limit");
             $("#Limit").val(0);
             div.style.display = "none";
+            $("#Amount").prop('readonly', false);
         }
     
     }
@@ -70,7 +74,7 @@ $(document).ready(
                             </div>
                         <div class="float-end btn-group-md">
                             <button class="btn btn-primary w-100">Save</button>
-                            <a asp-action="UserProduct" asp-controller="Index" class="btn btn-warning w-100">Cancel</a>
+                            <a asp-action="Index" asp-controller="UserProduct" class="btn btn-warning w-100">Cancel</a>
                         </div>
                     </form>
                 </div>

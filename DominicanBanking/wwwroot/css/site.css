@@ -6,6 +6,8 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
+    -webkit-box-sizing: border-box;
+
 }
 
 .body {
@@ -37,11 +39,6 @@
     unicode-range: U+1F1E6-1F1FF;
     src: url(https://raw.githack.com/googlefonts/noto-emoji/main/fonts/NotoColorEmoji.ttf);
 }
-
-nav {
-    height: 80px;
-}
-
 
 h1 {
     font-weight: bold;
@@ -210,4 +207,66 @@ thead {
     color: #ffff;
     font-size: 20px;
 }
+
+.type-account {
+    position: absolute;
+    left: 0;
+    top: 20px;
+    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: 700;
+    background: red;
+    color: #fff;
+    padding: 3px 10px;
+}
+
+
+
+
+.bank-details {
+    padding: 30px;
+}
+
+.bank-category {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #ccc;
+    margin-bottom: 18px;
+}
+
+.bank-details h4 a {
+    font-weight: 500;
+    display: block;
+    margin-bottom: 18px;
+    text-transform: uppercase;
+    color: #363636;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+    .bank-details h4 a:hover {
+        color: #3829d8;
+    }
+
+.probando {
+    overflow: hidden;
+}
+
+.image {
+    overflow: hidden;
+    width: 400px;
+    height: 253px;
+}
+
+
+
+
+
+
+
+
+
+
 

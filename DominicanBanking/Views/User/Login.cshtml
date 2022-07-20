@@ -2,6 +2,8 @@
 @model LoginViewModel
 
 @{
+        ViewData["Title"] = "Login";
+
 }
 
 <div class="body">
@@ -12,7 +14,7 @@
                     <h1>Login</h1>
                                     @if(Model.HasError){<div class="alert alert-danger">@Model.Error</div>}
                     <div class="social-container">
-                        <a href="#" class="social"><i class="fa fa-facebook fa-2x"></i></a>
+                        <a href="#" class="social"><i class="fab fa-facebook fa-2x"></i></a>
                         <a href="#" class="social"><i class="fab fa fa-twitter fa-2x"></i></a>
                     </div>
                     <span class="span_Login">or use your account</span>
