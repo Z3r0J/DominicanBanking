@@ -239,6 +239,65 @@ namespace DominicanBanking.Infrastructure.Identity.Services
             return response;
 
         }
+        public async Task<PasswordResponse> ChangePasswordAsync(PasswordRequest request) {
+
+            var user = await _userManager.FindByIdAsync(request.UserId);
+
+            string token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+            var response = await _userManager.ResetPasswordAsync(user, token, request.NewPassword);
+
+            PasswordResponse passwordResponse = new();
+
+            if (response.Succeeded)
+            {
+                passwordResponse.HasError = false;
+            }
+            if (response.Errors.Count()>0) {
+                foreach (var error in response.Errors)
+                {
+                    passwordResponse.HasError = true;
+                    passwordResponse.Error = error.Description;
+                }
+            }
+
+            return passwordResponse;
+        }
+
+        public async Task<EditResponse> EditAccountAsync(EditRequest request) {
+
+            var user = await _userManager.FindByIdAsync(request.Id);
+
+            user.Name = request.Name;
+            user.NormalizedEmail = request.Email.ToUpper();
+            user.NormalizedUserName = request.Username.ToUpper();
+            user.LastName = request.LastName;
+            user.PhoneNumber = request.Phone;
+            user.Documents = request.Documents;
+            user.Email = request.Email;
+            user.UserName = request.Username;
+
+            var usm = await _userManager.UpdateAsync(user);
+
+            EditResponse editResponse = new();
+
+            if (usm.Succeeded)
+            {
+                editResponse.HasError = false;
+            }
+            else
+            {
+                editResponse.HasError = true;
+                foreach (var error in usm.Errors)
+                {
+                    editResponse.HasError = true;
+                    editResponse.Error = error.Description;
+                }
+            }
+
+            return editResponse;
+
+        }
 
         public async Task<ActivateResponse> DeactivateAsync(ActivateRequest request)
         {
