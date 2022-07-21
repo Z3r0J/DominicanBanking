@@ -1,8 +1,204 @@
-﻿@{
+﻿
+@using DominicanBanking.Core.Application.ViewModel.DashBoard
+@model DashboardViewModel
+@{
     ViewData["Title"] = "Home Page";
 }
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome Administrator</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="row mt-3 mb-4 ms-2">
+        <div class="col-8">
+            <div class="d-flex justify-content-between ">
+                <h1 class="fw-bold text-start color">&nbsp;DashBoard</h1>
+                </div>
+
+        </div>
+    </div>
+
+    <!-- Content Row -->
+    <div class="row ms-2">
+
+        <!-- Earnings (Monthly) Card Example -->
+        <div class="col-xl-3 col-md-5 mb-4">
+            <div class="card border-left border-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col ms-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                Transaction
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.Transaction</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-arrow-right-arrow-left fa-2x text-success"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-xl-3 col-md-5 mb-4">
+            <div class="card border-left border-danger shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col ms-2">
+                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                Transaction (Today)
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.TransactionToday</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-arrow-right-arrow-left fa-2x text-danger"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Earnings (Monthly) Card Example -->
+        <div class="col-xl-3 col-md-5 mb-4">
+            <div class="card border-left border-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col ms-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                Payment
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.PaymentTotal</div>
+                        </div>
+
+                        <div class="col-auto">
+                            <i class="fas fa-money-bill-wave fa-2x text-info"></i>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+            
+        <!-- Earnings (Monthly) Card Example -->
+        <div class="col-xl-3 col-md-5 mb-4">
+            <div class="card border-left border-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col ms-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Payment (Today)
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.PaymentToday</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-money-bill-wave fa-2x text-primary"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pending Requests Card Example -->
+        <div class="col-xl-3 col-md-5 mb-4">
+            <div class="card border-left border-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col ms-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                Client Active
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.ClientActive</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-users fa-2x text-warning"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+                <!-- Pending Requests Card Example -->
+        <div class="col-xl-3 col-md-5 mb-4">
+            <div class="card border-left border-morado shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col ms-2">
+                            <div class="text-xs font-weight-bold text-morado text-uppercase mb-1">
+                                Client Inactive
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.ClientInactive</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-users fa-2x text-morado"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Content Row -->
+    <div class="row ms-2">
+
+        <!-- Content Column -->
+        <div class="col-lg-6 mb-4">
+
+            <!-- Color System -->
+            <div class="row">
+                <div class="col-xl-5 col-md-8 mb-4">
+                    <div class="card bg-primary text-white shadow">
+                        <div class="card-body" style="font-size:17px;">
+                            Client
+                                <div class="text-white-50 small" style=" font-size: 15px;">Inactive - @Model.ClientInactive</div>
+                                <div class="text-white-50 small" style=" font-size: 15px;">Active - @Model.ClientActive</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-5 col-md-8 mb-4">
+                    <div class="card bg-danger text-white shadow">
+                        <div class="card-body" style="font-size:17px;">
+                            Product Quantity
+                            <div class="text-white-50 small" style="font-size:15px;">Savings Account - @Model.ProductQuantitySavings</div>
+                            <div class="text-white-50 small" style="font-size:15px;">Credit Card - @Model.ProductQuantityCredit</div>
+                            <div class="text-white-50 small" style="font-size:15px;">Loan - @Model.ProductQuantityLoan</div>
+                            <div class="text-white-50 small float-end" style="font-size:15px;">Total - @Model.ProductQuantityTotal</div>
+
+ 
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-lg-6 mb-4">
+
+            <!-- Approach -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Dominican Banking 🇩🇴</h6>
+                </div>
+                <div class="card-body">
+                    <p>
+                        Dominican Banking is a system created by students from Dominican Republic at ITLA
+                        This Project is an Internet Banking where the client can make Payments, Transfer and add new Beneficiary,
+                        The Administrator can Create Savings Account Loan and Credit Card and assigned it to an User also can Activate, Deactivate and Create User account.
+                        
+
+                    </p>
+                    <p>
+                       Thanks to Leonardo Tavarez who is a professor at ITLA, he assigns this Project using great things 
+                       like AutoMapper, Onion Architecture and Identity, all of this was learned during asynchronous classes.
+                    </p>
+                    <span>Created By: </span>
+                    <ul>
+                        <li>Johanly Baez</li>
+                        <li>Jose Miguel Cayetano</li>
+                        <li>Jean Carlos Reyes</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
 </div>

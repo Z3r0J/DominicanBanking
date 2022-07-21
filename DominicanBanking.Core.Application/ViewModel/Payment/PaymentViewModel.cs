@@ -13,6 +13,7 @@ namespace DominicanBanking.Core.Application.ViewModel.Payment
         public string IdentifyNumberTo { get; set; }
         public string UserId { get; set; }
         public int TypeId { get; set; }
+        public DateTime Created { get; set; }
         public string TypePayment { get; set; }
     }
 }

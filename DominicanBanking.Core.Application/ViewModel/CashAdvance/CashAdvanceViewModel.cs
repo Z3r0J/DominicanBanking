@@ -12,6 +12,7 @@ namespace DominicanBanking.Core.Application.ViewModel.CashAdvance
         public string CreditCardNumberFrom { get; set; }
         public double Amount { get; set; }
         public string IdentifyNumberTo { get; set; }
+        public DateTime Created { get; set; }
         public string UserId { get; set; }
     }
 }
