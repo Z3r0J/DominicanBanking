@@ -109,10 +109,12 @@
         </main>
     </div>
 
-    <footer class="text-center border-top h-100 bg-primary text-white">
-        ❤ @DateTime.Now.Year ~ Dominican Banking
+        @if (User != null)
+    {
+        <footer class="text-center border-top h-100 bg-primary text-white">
+            ❤ @DateTime.Now.Year ~ Dominican Banking
     </footer>
-
+    }
     @*<footer class="border-top footer text-muted">
             <div class="container">
                 &copy; 2022 - DominicanBanking - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
