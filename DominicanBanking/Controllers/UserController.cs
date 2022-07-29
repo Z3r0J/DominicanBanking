@@ -265,7 +265,6 @@ namespace DominicanBanking.Controllers
 
         }
 
-        [HttpPost]
         [Authorize(Roles = "ADMINISTRATOR")]
         public async Task<IActionResult> ProductByUser(string Id) {
 
