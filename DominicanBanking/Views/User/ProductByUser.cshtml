@@ -1,0 +1,87 @@
+﻿@using DominicanBanking.Core.Application.ViewModel.UserProduct
+@model List<UserProductViewModel>
+@{
+    ViewData["Title"] = "Home Pages";
+}
+
+    <div class="container-fluid mt-5">
+            <div class="row mt-3 mb-4 ms-5">
+        <div class="col-8">
+            <div class="d-flex justify-content-between ">
+                <h1 class="fw-bold text-start color">&nbsp;My Products</h1>
+                </div>
+
+        </div>
+    </div>
+        <div class="row ms-5">
+            @foreach(var item in Model){
+            <div class="col-12 col-md-6 col-lg-3 d-flex mt-5">
+                <div class="card" style="width: 25rem; border: solid 2px blue; border-radius: 18px;">
+                    @if(item.ProductId ==1){
+                       <div class="type-account bg-success">
+                        @item.ProductName
+                        </div>
+                        <img src="https://cdn.raisin.co.uk/app/uploads/2020/06/pension-savings-account.png" class="card-img-top" alt="...">
+                    }
+                    @if (item.ProductId == 2)
+                    {
+                      <div class="type-account bg-primary">
+                        @item.ProductName
+                        </div>
+                        <img src="https://www2.bac-assets.com/credit-cards/spa-assets/images/assets-images-site-targeted-content-credit-cards-bac_cc_overview_banner-default-card_sky.webp" class="card-img-top" alt="...">
+
+                    }
+                    @if(item.ProductId == 3)
+                    {
+                        <div class="type-account bg-dark text-white">
+                        @item.ProductName
+                        </div>
+                        <img class="card-img-top" src="https://assets.fullertonindia.com/sites/default/files/instant_PL.png" alt="...">
+                    }
+                    <div class="bank-details">
+                        <span class="@(item.IsPrincipal?"badge bg-primary bank-category w-50 text-white h5":"badge bg-danger bank-category w-50 text-white h5")">Dominican Banking</span>
+                        <h4><a href="">ACCOUNT INFORMATION</a></h4>
+                                <span class="fw-bold">Account Type: <span class="fw-light">@item.ProductName</span></span>
+                                <br/>
+                                <span class="fw-bold">Account Number: <span class="fw-light">@item.IdentifyNumber</span></span>
+                                
+                        @if (item.ProductId == 1)
+                        {
+                            <div class="d-flex float-end mt-4">
+                                <span class="card-text fw-bold">Available: <span class="text-success">@item.Amount.ToString("C") </span></span>
+                            </div>
+
+                            <div class="d-flex float-end mt-4">
+                                @if (item.IsPrincipal) { }else{<a asp-action="Delete" asp-controller="UserProduct" asp-route-id="@item.Id" class="btn btn-danger btn-rounded w-25"><i class="fa fa-trash"></i> Delete</a>}
+                            </div>
+                        }
+
+                        @if (item.ProductId == 2)
+                        {
+                            <div class="d-flex justify-content-around mt-4">
+                                <span class="card-text fw-bold">Dues: <span class="text-danger">@item.Amount.ToString("C") </span></span>
+                                <span class="card-text fw-bold">Limit: <span class="text-success">@item.Limit.Value.ToString("C")</span></span>
+                            </div>
+
+                            <div class="d-flex float-end mt-4">
+                                @if (item.IsPrincipal) { }else{<a asp-action="Delete" asp-controller="UserProduct" asp-route-id="@item.Id" class="btn btn-danger btn-rounded w-25"><i class="fa fa-trash"></i> Delete</a>}
+                            </div>
+                        }
+                        @if (item.ProductId == 3)
+                        {
+                            <div class="d-flex float-end mt-4">
+                                <span class="card-text fw-bold">Dues: <span class="text-danger">@item.Amount.ToString("C")</span></span>
+                            </div>
+
+                            <div class="d-flex float-end mt-4">
+                                @if (item.IsPrincipal) { }else{<a asp-action="Delete" asp-controller="UserProduct" asp-route-id="@item.Id" class="btn btn-danger btn-rounded w-25"><i class="fa fa-trash"></i> Delete</a>}
+                            </div>
+                        }
+                    </div>
+                </div>
+
+            </div>
+            }
+        </div>
+
+    </div>

@@ -267,6 +267,26 @@ namespace DominicanBanking.Controllers
 
         [HttpPost]
         [Authorize(Roles = "ADMINISTRATOR")]
+        public async Task<IActionResult> ProductByUser(string Id) {
+
+            if (!_validateUserSession.IsLogin())
+            {
+                return RedirectToRoute(new { action = "Login", controller = "User" });
+            }
+
+            var info = HttpContext.Session.Get<AuthenticationResponse>("user");
+
+            var UserProduct = await _userProductServices.GetAllViewModelWithIncludes();
+
+
+
+            return View(UserProduct.Where(up => up.UserId == Id).ToList());
+
+
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "ADMINISTRATOR")]
         public async Task<IActionResult> EditAdministrator(SaveEditViewModel vm)
         {
 

@@ -22,4 +22,11 @@
     <ProjectReference Include="..\DominicanBanking.Infrastructure.Shared\DominicanBanking.Infrastructure.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Views\User\ProductByUser.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

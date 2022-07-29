@@ -79,6 +79,7 @@
                         <td>@foreach(var rol in item.Roles){<span>@rol</span>}</td>
                         <td><a asp-action="Deactivate" asp-controller="User" asp-route-id="@item.Id" class="btn btn-danger">Deactivate</a></td>
                         <td><a asp-action="Edit" asp-controller="User" asp-route-id="@item.Id" class="btn btn-warning w-25 btn-rounded"><i class="fa fa-pencil"></i></a></td> 
+                        <td><a asp-action="ProductByUser" asp-controller="User" asp-route-id="@item.Id" class="btn btn-success w-25 btn-rounded"><i class="fa fa-card"></i> Products</a></td> 
                     </tr>  
                    }
 
@@ -92,7 +93,9 @@
                         <td><span class="@(item.IsVerified?"badge bg-success":"badge bg-danger")">@(item.IsVerified?"Activate":"Deactivate")</span></td>
                         <td>@foreach(var rol in @item.Roles){@rol}</td>
                         <td><a asp-action="Activate" asp-controller="User" asp-route-id="@item.Id" class="btn btn-success">Activate</a></td>
-                                           <td><a asp-action="Edit" asp-controller="User" asp-route-id="@item.Id" class="btn btn-warning w-25 btn-rounded"><i class="fa fa-pencil"></i></a></td> 
+                        <td><a asp-action="Edit" asp-controller="User" asp-route-id="@item.Id" class="btn btn-warning w-25 btn-rounded"><i class="fa fa-pencil"></i></a></td> 
+                        <td><a asp-action="ProductByUser" asp-controller="User" asp-route-id="@item.Id" class="btn btn-success w-25 btn-rounded"><i class="fa fa-card"></i> Products</a></td> 
+
                     </tr>     
                    }
                 </tbody>

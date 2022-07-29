@@ -71,7 +71,7 @@ namespace DominicanBanking.WebApp.Controllers
             }
 
             Account.Amount += model.Amount;
-            CreditCard.Amount = CreditCard.Amount + model.Amount+(model.Amount*6.25/100);
+            CreditCard.Amount = CreditCard.Amount + model.Amount + (model.Amount*6.25/100);
 
             model.UserId = userLog.Id;
 
