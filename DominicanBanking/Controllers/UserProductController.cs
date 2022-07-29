@@ -85,6 +85,17 @@ namespace DominicanBanking.WebApp.Controllers
 
             vm.IsPrincipal = false;
 
+            if (vm.ProductId == 3)
+            {
+               var accountprincipal = allAccount.FirstOrDefault(ac => ac.IsPrincipal == true && ac.UserId == vm.UserId);
+
+                await _userProduct.Add(vm);
+                accountprincipal.Amount += vm.Amount;
+                var savevm = _mapper.Map<SaveUserProductViewModel>(accountprincipal);
+                await _userProduct.Update(savevm, accountprincipal.Id);
+                return RedirectToAction("Index");
+            }
+
             await _userProduct.Add(vm);
 
             return RedirectToAction("Index");
